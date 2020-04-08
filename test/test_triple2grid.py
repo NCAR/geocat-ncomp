@@ -1,6 +1,6 @@
 import numpy as np
 import xarray as xr
-import geocat.comp
+import geocat.ncomp
 
 import sys
 import time
@@ -38,12 +38,12 @@ fi_asfloat32 = fi.astype(np.float32)
 
 class Test_triple2grid_float64(ut.TestCase):
     def test_triple2grid_float64(self):
-        fo = geocat.comp.triple2grid(x, y, fi, xgrid, ygrid)
+        fo = geocat.ncomp.triple2grid(x, y, fi, xgrid, ygrid)
         prepare_masked(fo_masked, fo.values)
         np.testing.assert_array_equal(fi, fo_masked)
         
 class Test_triple2grid_float32(ut.TestCase):
     def test_triple2grid_float32(self):
-        fo = geocat.comp.triple2grid(x.astype(np.float32), y.astype(np.float32), fi_asfloat32, xgrid.astype(np.float32), ygrid.astype(np.float32))
+        fo = geocat.ncomp.triple2grid(x.astype(np.float32), y.astype(np.float32), fi_asfloat32, xgrid.astype(np.float32), ygrid.astype(np.float32))
         prepare_masked(fo_masked, fo.values)
         np.testing.assert_array_equal(fi_asfloat32, fo_masked)

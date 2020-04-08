@@ -1,4 +1,4 @@
-from geocat.comp cimport _ncomp
+from geocat.ncomp cimport _ncomp
 
 import unittest
 import numpy as np

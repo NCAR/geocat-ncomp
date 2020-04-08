@@ -1,6 +1,6 @@
 import numpy as np
 import xarray as xr
-import geocat.comp
+import geocat.ncomp
 
 import sys
 import time
@@ -35,41 +35,41 @@ for i in range(out_size_M):
 for j in range(out_size_N):
     lon1D[j] = float(j) * 0.5
 
-fo = geocat.comp.rcm2points(lat2D, lon2D, fi, lat1D, lon1D, 2)
+fo = geocat.ncomp.rcm2points(lat2D, lon2D, fi, lat1D, lon1D, 2)
 
 fi_diag = np.asarray([np.diag(fi[0, :, :])])
 fi_diag_asfloat32 = fi_diag.astype(np.float32)
 
 class Test_rcm2points_float64(ut.TestCase):
     def test_rcm2points_float64(self):
-        fo = geocat.comp.rcm2points(lat2D, lon2D, fi, lat1D, lon1D, 2)
+        fo = geocat.ncomp.rcm2points(lat2D, lon2D, fi, lat1D, lon1D, 2)
         np.testing.assert_array_equal(fi_diag, fo[..., ::2, ::2].values)
         
     def test_rcm2points_msg_float64(self):
-        fo = geocat.comp.rcm2points(lat2D, lon2D, fi, lat1D, lon1D, 0, msg=fi[0,0,0])
+        fo = geocat.ncomp.rcm2points(lat2D, lon2D, fi, lat1D, lon1D, 0, msg=fi[0,0,0])
         np.testing.assert_array_equal(fi_diag, fo[..., ::2, ::2].values)
 
     def test_rcm2points_nan_float64(self):
         fi_np_copy = fi.copy()
         fi_np_copy[:,0,0] = np.nan
         fi_np_diag = np.asarray([np.diag(fi_np_copy[0, :, :])])        
-        fo = geocat.comp.rcm2points(lat2D, lon2D, fi_np_copy, lat1D, lon1D)
+        fo = geocat.ncomp.rcm2points(lat2D, lon2D, fi_np_copy, lat1D, lon1D)
         np.testing.assert_array_equal(fi_diag[:, 1:], fo[..., 2::2].values)
 
 class Test_rcm2points_float32(ut.TestCase):
     def test_rcm2points_float32(self):
         fi_asfloat32 = fi.astype(np.float32)
-        fo = geocat.comp.rcm2points(lat2D.astype(np.float32), lon2D.astype(np.float32), fi_asfloat32, lat1D.astype(np.float32), lon1D.astype(np.float32))
+        fo = geocat.ncomp.rcm2points(lat2D.astype(np.float32), lon2D.astype(np.float32), fi_asfloat32, lat1D.astype(np.float32), lon1D.astype(np.float32))
         np.testing.assert_array_equal(fi_diag_asfloat32, fo[..., ::2, ::2].values)
         
     def test_rcm2points_msg_float32(self):
         fi_np_copy = fi.astype(np.float32)          
-        fo = geocat.comp.rcm2points(lat2D.astype(np.float32), lon2D.astype(np.float32), fi_np_copy, lat1D.astype(np.float32), lon1D.astype(np.float32), 0, msg=fi_np_copy[0,0,0])             
+        fo = geocat.ncomp.rcm2points(lat2D.astype(np.float32), lon2D.astype(np.float32), fi_np_copy, lat1D.astype(np.float32), lon1D.astype(np.float32), 0, msg=fi_np_copy[0,0,0])             
         np.testing.assert_array_equal(fi_diag_asfloat32, fo[..., ::2, ::2].values)
 
     def test_rcm2points_nan_float32(self):
         fi_np_copy = fi.astype(np.float32)
         fi_np_copy[:,0,0] = np.nan
-        fo = geocat.comp.rcm2points(lat2D, lon2D, fi_np_copy, lat1D, lon1D)
+        fo = geocat.ncomp.rcm2points(lat2D, lon2D, fi_np_copy, lat1D, lon1D)
         np.testing.assert_array_equal(fi_diag_asfloat32[:, 1:], fo[..., 2::2].values)        
         

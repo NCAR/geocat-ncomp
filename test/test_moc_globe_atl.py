@@ -3,8 +3,8 @@ from unittest import TestCase
 import numpy as np
 from dask.array.tests.test_xarray import xr
 
-import geocat.comp
-from geocat.comp._ncomp import _moc_globe_atl
+import geocat.ncomp
+from geocat.ncomp._ncomp import _moc_globe_atl
 
 
 class BaseTestClass(metaclass=ABCMeta):
@@ -107,7 +107,7 @@ class Test_Moc_Globe_Atl(TestCase, BaseTestClass):
     # Test if output dimension, type, and values are correct for all FLOAT64 inputs
     def test_moc_globe_atl_float64(self):
 
-        out_arr = geocat.comp.moc_globe_atl(self._lat_aux_grid,
+        out_arr = geocat.ncomp.moc_globe_atl(self._lat_aux_grid,
                                   self._a_wvel[0],
                                   self._a_bolus[0],
                                   self._a_submeso[0],
@@ -129,7 +129,7 @@ class Test_Moc_Globe_Atl(TestCase, BaseTestClass):
     # Test if output dimension, type, and values are correct for all FLOAT32 inputs
     def test_moc_globe_atl_float32(self):
 
-        out_arr = geocat.comp.moc_globe_atl(self._lat_aux_grid,
+        out_arr = geocat.ncomp.moc_globe_atl(self._lat_aux_grid,
                                   self._a_wvel[1],
                                   self._a_bolus[1],
                                   self._a_submeso[1],
@@ -151,7 +151,7 @@ class Test_Moc_Globe_Atl(TestCase, BaseTestClass):
     # Test if output dimension, type, and values are correct for all INT64 inputs
     def test_moc_globe_atl_int64(self):
 
-        out_arr = geocat.comp.moc_globe_atl(self._lat_aux_grid,
+        out_arr = geocat.ncomp.moc_globe_atl(self._lat_aux_grid,
                                   self._a_wvel[2],
                                   self._a_bolus[2],
                                   self._a_submeso[2],
@@ -173,7 +173,7 @@ class Test_Moc_Globe_Atl(TestCase, BaseTestClass):
     # Test if output dimension, type, and values are correct for FLOAT64 input with user-defined missing value
     def test_moc_globe_atl_msg_99(self):
 
-        out_arr = geocat.comp.moc_globe_atl(self._lat_aux_grid,
+        out_arr = geocat.ncomp.moc_globe_atl(self._lat_aux_grid,
                                   self._a_wvel[3],
                                   self._a_bolus[0],
                                   self._a_submeso[0],
@@ -195,7 +195,7 @@ class Test_Moc_Globe_Atl(TestCase, BaseTestClass):
     # Test if output dimension, type, and values are correct for FLOAT32 input with user-defined missing value
     def test_moc_globe_atl_msg_99_float32(self):
 
-        out_arr = geocat.comp.moc_globe_atl(self._lat_aux_grid,
+        out_arr = geocat.ncomp.moc_globe_atl(self._lat_aux_grid,
                                   self._a_wvel[4],
                                   self._a_bolus[0],
                                   self._a_submeso[0],
@@ -217,7 +217,7 @@ class Test_Moc_Globe_Atl(TestCase, BaseTestClass):
     # Test if output dimension, type, and values are correct for FLOAT64 input with np.nan missing value
     def test_moc_globe_atl_msg_nan(self):
 
-        out_arr = geocat.comp.moc_globe_atl(self._lat_aux_grid,
+        out_arr = geocat.ncomp.moc_globe_atl(self._lat_aux_grid,
                                   self._a_wvel[5],
                                   self._a_bolus[0],
                                   self._a_submeso[0],
@@ -239,7 +239,7 @@ class Test_Moc_Globe_Atl(TestCase, BaseTestClass):
     # Test if output dimension, type, and values are correct for FLOAT32 input with np.nan missing value
     def test_moc_globe_atl_msg_nan_float32(self):
 
-        out_arr = geocat.comp.moc_globe_atl(self._lat_aux_grid,
+        out_arr = geocat.ncomp.moc_globe_atl(self._lat_aux_grid,
                                   self._a_wvel[6],
                                   self._a_bolus[0],
                                   self._a_submeso[0],

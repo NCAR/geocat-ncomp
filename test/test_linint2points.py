@@ -1,6 +1,6 @@
 import numpy as np
 import xarray as xr
-import geocat.comp
+import geocat.ncomp
 
 from abc import ABCMeta
 import unittest as ut
@@ -60,7 +60,7 @@ class BaseTestClass(metaclass=ABCMeta):
 
 class Test_linint2points_numpy(ut.TestCase, BaseTestClass):
     def test_linint2points_fi_np(self):
-        fo = geocat.comp.linint2_points(self._fi_np, self._xo, self._yo, 0, xi=self._xi, yi=self._yi)
+        fo = geocat.ncomp.linint2_points(self._fi_np, self._xo, self._yo, 0, xi=self._xi, yi=self._yi)
 
         self.assertEqual((self._shape0, self._shape1), fo.shape[:-1])
 
@@ -82,34 +82,34 @@ class Test_linint2points_numpy(ut.TestCase, BaseTestClass):
         np.testing.assert_almost_equal(self._ncl_truth, fo_vals, decimal=5)
 
     def test_linint2points_fi_np_no_xi_yi(self):
-        with self.assertRaises(geocat.comp.CoordinateError):
-            fo = geocat.comp.linint2_points(self._fi_np, self._xo, self._yo, 0)
+        with self.assertRaises(geocat.ncomp.CoordinateError):
+            fo = geocat.ncomp.linint2_points(self._fi_np, self._xo, self._yo, 0)
 
     def test_linint2points_fi_np_no_yi(self):
-        with self.assertRaises(geocat.comp.CoordinateError):
-            fo = geocat.comp.linint2_points(self._fi_np, self._xo, self._yo, 0, xi=self._xi)
+        with self.assertRaises(geocat.ncomp.CoordinateError):
+            fo = geocat.ncomp.linint2_points(self._fi_np, self._xo, self._yo, 0, xi=self._xi)
 
     def test_linint2points_fi_np_no_xi(self):
-        with self.assertRaises(geocat.comp.CoordinateError):
-            fo = geocat.comp.linint2_points(self._fi_np, self._xo, self._yo, 0, yi=self._yi)
+        with self.assertRaises(geocat.ncomp.CoordinateError):
+            fo = geocat.ncomp.linint2_points(self._fi_np, self._xo, self._yo, 0, yi=self._yi)
 
 
 class Test_linint2points_non_monotonic(ut.TestCase, BaseTestClass):
     def test_linint2points_non_monotonic_xr(self):
         fi = xr.DataArray(self._fi_np[:, :, ::-1, :], dims=['time', 'level', 'lat', 'lon'], coords={'lat': self._yi_reverse, 'lon': self._xi}).chunk(self._chunks)
-        with self.assertWarns(geocat.comp._ncomp.NcompWarning):
-            geocat.comp.linint2_points(fi, self._xo, self._yo, 0).compute()
+        with self.assertWarns(geocat.ncomp._ncomp.NcompWarning):
+            geocat.ncomp.linint2_points(fi, self._xo, self._yo, 0).compute()
 
     def test_linint2points_non_monotonic_np(self):
-        with self.assertWarns(geocat.comp._ncomp.NcompWarning):
-            geocat.comp.linint2_points(self._fi_np[:, :, ::-1, :], self._xo, self._yo, 0, xi=self._xi, yi=self._yi_reverse)
+        with self.assertWarns(geocat.ncomp._ncomp.NcompWarning):
+            geocat.ncomp.linint2_points(self._fi_np[:, :, ::-1, :], self._xo, self._yo, 0, xi=self._xi, yi=self._yi_reverse)
 
 
 class Test_linint2points_float64(ut.TestCase, BaseTestClass):
     def test_linint2points(self):
         fi = xr.DataArray(self._fi_np, dims=['time', 'level', 'lat', 'lon'], coords={'lat': self._yi, 'lon': self._xi}).chunk(self._chunks)
 
-        fo = geocat.comp.linint2_points(fi, self._xo, self._yo, 0)
+        fo = geocat.ncomp.linint2_points(fi, self._xo, self._yo, 0)
 
         self.assertEqual((self._shape0, self._shape1), fo.shape[:-1])
 
@@ -128,7 +128,7 @@ class Test_linint2points_float64(ut.TestCase, BaseTestClass):
         # fi_msg_nan = xr.DataArray(self._fi_np_msg_nan, dims=['time', 'level', 'lat', 'lon'], coords={'lat': self._yi, 'lon': self._xi}).chunk(self._chunks)
         fi_msg_nan = xr.DataArray(self._fi_np_msg_nan, dims=['time', 'level', 'lat', 'lon'], coords={'lat': self._yi, 'lon': self._xi}).chunk(self._chunks)
 
-        fo = geocat.comp.linint2_points(fi_msg_nan, self._xo, self._yo, 0, msg=np.nan)
+        fo = geocat.ncomp.linint2_points(fi_msg_nan, self._xo, self._yo, 0, msg=np.nan)
 
         self.assertEqual((self._shape0, self._shape1), fo.shape[:-1])
 
@@ -147,7 +147,7 @@ class Test_linint2points_float64(ut.TestCase, BaseTestClass):
         # fi_msg_99 = xr.DataArray(self._fi_np_msg_nan, dims=['time', 'level', 'lat', 'lon'], coords={'lat': self._yi, 'lon': self._xi}).chunk(self._chunks)
         fi_msg_99 = xr.DataArray(self._fi_np_msg_99, dims=['time', 'level', 'lat', 'lon'], coords={'lat': self._yi, 'lon': self._xi}).chunk(self._chunks)
 
-        fo = geocat.comp.linint2_points(fi_msg_99, self._xo, self._yo, 0, msg=self._fi_np_msg_99[0,0,0,0])
+        fo = geocat.ncomp.linint2_points(fi_msg_99, self._xo, self._yo, 0, msg=self._fi_np_msg_99[0,0,0,0])
 
         self.assertEqual((self._shape0, self._shape1), fo.shape[:-1])
 
@@ -170,13 +170,13 @@ class Test_linint2points_float64(ut.TestCase, BaseTestClass):
 #         # use 1 for time and level chunk sizes
 #         chunks = {'time': 1, 'level': 1, 'lat': self._fi_np.shape[2], 'lon': self._fi_np.shape[3]}
 #         fi = xr.DataArray(self._fi_np, dims=['time', 'level', 'lat', 'lon'], coords={'lat': self._yi, 'lon': self._xi}).chunk(self._chunks)
-#         fo = geocat.comp.linint2_points(fi, self._xo, self._yo, 0)
+#         fo = geocat.ncomp.linint2_points(fi, self._xo, self._yo, 0)
 #         np.testing.assert_array_equal(fi.values, fo[..., ::2, ::2].values)
 #
 #     def test_linint2points_chunked_interp(self):
 #         # use 1 for interpolated dimension chunk sizes -- this should throw a ChunkError
 #         chunks = {'time': 1, 'level': 1, 'lat': 1, 'lon': 1}
 #         fi = xr.DataArray(self._fi_np, dims=['time', 'level', 'lat', 'lon'], coords={'lat': self._yi, 'lon': self._xi}).chunk(self._chunks)
-#         with self.assertRaises(geocat.comp.ChunkError):
-#             fo = geocat.comp.linint2_points(fi, self._xo, self._yo, 0)
+#         with self.assertRaises(geocat.ncomp.ChunkError):
+#             fo = geocat.ncomp.linint2_points(fi, self._xo, self._yo, 0)
 #

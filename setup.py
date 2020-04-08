@@ -11,7 +11,7 @@ import numpy
 import os
 import sys
 
-with open("src/geocat/comp/version.py") as f:
+with open("geocat/ncomp/version.py") as f:
     exec(f.read())
 
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -20,24 +20,23 @@ PREFIX = os.path.normpath(sys.prefix)
 include_dirs = [os.path.join(PREFIX, 'include'), numpy.get_include()]
 
 extensions = [
-    Extension("geocat.comp._ncomp", ["src/geocat/comp/_ncomp.pyx"],
+    Extension("geocat.ncomp._ncomp", ["geocat/ncomp/_ncomp.pyx"],
         include_dirs=include_dirs,
         libraries=["ncomp"],
 ),
 ]
 setup(
-    name="geocat.comp",
+    name="geocat.ncomp",
     ext_modules=cythonize(extensions,
                           # help cythonize find my own .pxd files
-                          include_path=[os.path.join(SRC_DIR, "src/geocat/comp/_ncomp")]),
-    package_dir={'geocat': 'src/geocat', 'geocat.comp': 'src/geocat/comp'},
-    package_data={'geocat': ['__init__.pxd', 'comp/*.pxd']},
+                          include_path=[os.path.join(SRC_DIR, "geocat/ncomp/_ncomp")]),
+    package_dir={'geocat': 'geocat', 'geocat.ncomp': 'geocat/ncomp'},
+    package_data={'geocat': ['__init__.pxd', 'ncomp/*.pxd']},
     namespace_packages=['geocat'],
-    packages=["geocat", "geocat.comp"],
+    packages=["geocat", "geocat.ncomp"],
     version=__version__, 
     install_requires=[
         'numpy', 
-        'xarray', 
-        'dask[complete]'
+        'cython', 
     ]
 )

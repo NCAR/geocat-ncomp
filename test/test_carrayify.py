@@ -1,6 +1,6 @@
 import numpy as np
 import xarray as xr
-from geocat.comp._ncomp import carrayify
+from geocat.ncomp._ncomp import carrayify
 
 import sys
 import time

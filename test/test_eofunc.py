@@ -4,8 +4,8 @@ import numpy as np
 # from dask.array.tests.test_xarray import xr
 import xarray as xr
 
-from geocat.comp._ncomp import _eofunc, _eofunc_n, _eofunc_ts, _eofunc_ts_n
-from geocat.comp import eofunc, eofunc_ts
+from geocat.ncomp._ncomp import _eofunc, _eofunc_n, _eofunc_ts, _eofunc_ts_n
+from geocat.ncomp import eofunc, eofunc_ts
 
 
 class BaseEOFuncTestClass(metaclass=ABCMeta):
