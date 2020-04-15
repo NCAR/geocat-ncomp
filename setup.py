@@ -11,7 +11,7 @@ import numpy
 import os
 import sys
 
-with open("geocat/ncomp/version.py") as f:
+with open("src/geocat/ncomp/version.py") as f:
     exec(f.read())
 
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -20,7 +20,7 @@ PREFIX = os.path.normpath(sys.prefix)
 include_dirs = [os.path.join(PREFIX, 'include'), numpy.get_include()]
 
 extensions = [
-    Extension("geocat.ncomp._ncomp", ["geocat/ncomp/_ncomp.pyx"],
+    Extension("geocat.ncomp._ncomp", ["src/geocat/ncomp/_ncomp.pyx"],
         include_dirs=include_dirs,
         libraries=["ncomp"],
 ),
@@ -29,8 +29,8 @@ setup(
     name="geocat.ncomp",
     ext_modules=cythonize(extensions,
                           # help cythonize find my own .pxd files
-                          include_path=[os.path.join(SRC_DIR, "geocat/ncomp/_ncomp")]),
-    package_dir={'geocat': 'geocat', 'geocat.ncomp': 'geocat/ncomp'},
+                          include_path=[os.path.join(SRC_DIR, "src/geocat/ncomp/_ncomp")]),
+    package_dir={'': 'src', 'geocat': 'src/geocat', 'geocat.ncomp': 'src/geocat/ncomp'},
     package_data={'geocat': ['__init__.pxd', 'ncomp/*.pxd']},
     namespace_packages=['geocat'],
     packages=["geocat", "geocat.ncomp"],
