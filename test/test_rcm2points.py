@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.testing as nt
 import xarray as xr
-import geocat.comp as gc
+import geocat.ncomp as gn
 
 import sys
 import time
@@ -51,37 +51,37 @@ class Test_rcm2points(ut.TestCase):
     """
 
     def test_rcm2points_float64_nom_opt0(self):
-        nt.assert_array_almost_equal(fo_nom_opt0_expected, gc.rcm2points(lat2d, lon2d, fi_nom.astype(np.float64), lat, lon, opt=0))
+        nt.assert_array_almost_equal(fo_nom_opt0_expected, gn.rcm2points(lat2d, lon2d, fi_nom.astype(np.float64), lat, lon, opt=0))
 
     def test_rcm2points_float64_nom_opt2(self):
-        nt.assert_array_almost_equal(fo_nom_opt2_expected, gc.rcm2points(lat2d, lon2d, fi_nom.astype(np.float64), lat, lon, opt=2))
+        nt.assert_array_almost_equal(fo_nom_opt2_expected, gn.rcm2points(lat2d, lon2d, fi_nom.astype(np.float64), lat, lon, opt=2))
 
     def test_rcm2points_float64_nan_opt0(self):
-        nt.assert_array_almost_equal(fo_nan_opt0_expected, gc.rcm2points(lat2d, lon2d, fi_nan.astype(np.float64), lat, lon, opt=0))
+        nt.assert_array_almost_equal(fo_nan_opt0_expected, gn.rcm2points(lat2d, lon2d, fi_nan.astype(np.float64), lat, lon, opt=0))
 
     def test_rcm2points_float64_nan_opt2(self):
-        nt.assert_array_almost_equal(fo_nan_opt2_expected, gc.rcm2points(lat2d, lon2d, fi_nan.astype(np.float64), lat, lon, opt=2))
+        nt.assert_array_almost_equal(fo_nan_opt2_expected, gn.rcm2points(lat2d, lon2d, fi_nan.astype(np.float64), lat, lon, opt=2))
 
     def test_rcm2points_float64_msg_opt0(self):
-        nt.assert_array_almost_equal(fo_msg_opt0_expected, gc.rcm2points(lat2d, lon2d, fi_msg.astype(np.float64), lat, lon, opt=0, msg=msg64))
+        nt.assert_array_almost_equal(fo_msg_opt0_expected, gn.rcm2points(lat2d, lon2d, fi_msg.astype(np.float64), lat, lon, opt=0, msg=msg64))
 
     def test_rcm2points_float64_msg_opt2(self):
-        nt.assert_array_almost_equal(fo_msg_opt2_expected, gc.rcm2points(lat2d, lon2d, fi_msg.astype(np.float64), lat, lon, opt=2, msg=msg64))
+        nt.assert_array_almost_equal(fo_msg_opt2_expected, gn.rcm2points(lat2d, lon2d, fi_msg.astype(np.float64), lat, lon, opt=2, msg=msg64))
 
     def test_rcm2points_float32_nom_opt0(self):
-        nt.assert_array_almost_equal(fo_nom_opt0_expected, gc.rcm2points(lat2d, lon2d, fi_nom.astype(np.float32), lat, lon, opt=0))
+        nt.assert_array_almost_equal(fo_nom_opt0_expected, gn.rcm2points(lat2d, lon2d, fi_nom.astype(np.float32), lat, lon, opt=0))
 
     def test_rcm2points_float32_nom_opt2(self):
-        nt.assert_array_almost_equal(fo_nom_opt2_expected, gc.rcm2points(lat2d, lon2d, fi_nom.astype(np.float32), lat, lon, opt=2))
+        nt.assert_array_almost_equal(fo_nom_opt2_expected, gn.rcm2points(lat2d, lon2d, fi_nom.astype(np.float32), lat, lon, opt=2))
 
     def test_rcm2points_float32_nan_opt0(self):
-        nt.assert_array_almost_equal(fo_nan_opt0_expected, gc.rcm2points(lat2d, lon2d, fi_nan.astype(np.float32), lat, lon, opt=0))
+        nt.assert_array_almost_equal(fo_nan_opt0_expected, gn.rcm2points(lat2d, lon2d, fi_nan.astype(np.float32), lat, lon, opt=0))
 
     def test_rcm2points_float32_nan_opt2(self):
-        nt.assert_array_almost_equal(fo_nan_opt2_expected, gc.rcm2points(lat2d, lon2d, fi_nan.astype(np.float32), lat, lon, opt=2))
+        nt.assert_array_almost_equal(fo_nan_opt2_expected, gn.rcm2points(lat2d, lon2d, fi_nan.astype(np.float32), lat, lon, opt=2))
 
     def test_rcm2points_float32_msg_opt0(self):
-        nt.assert_array_almost_equal(fo_msg_opt0_expected, gc.rcm2points(lat2d, lon2d, fi_msg.astype(np.float32), lat, lon, opt=0, msg=msg32))
+        nt.assert_array_almost_equal(fo_msg_opt0_expected, gn.rcm2points(lat2d, lon2d, fi_msg.astype(np.float32), lat, lon, opt=0, msg=msg32))
 
     def test_rcm2points_float32_msg_opt2(self):
-        nt.assert_array_almost_equal(fo_msg_opt2_expected, gc.rcm2points(lat2d, lon2d, fi_msg.astype(np.float32), lat, lon, opt=2, msg=msg32))
+        nt.assert_array_almost_equal(fo_msg_opt2_expected, gn.rcm2points(lat2d, lon2d, fi_msg.astype(np.float32), lat, lon, opt=2, msg=msg32))
