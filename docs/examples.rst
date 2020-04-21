@@ -1,8 +1,8 @@
 Usage Examples
-===========================
+==============
 
-The examples below show GeoCAT-comp functions being utilized in real-world use
-cases.  They also demonstrate how GeoCAT-comp can be used to make plots with
+The examples below show GeoCAT-ncomp functions being utilized in real-world use
+cases.  They also demonstrate how GeoCAT-ncomp can be used to make plots with
 Matplotlib (using Cartopy) and PyNGL (work in progress).
 
 
@@ -13,12 +13,12 @@ The data files used in these examples can be downloaded from the
 `NCL website <https://ncl.ucar.edu/Applications/Data/>`_.
 
 
-GeoCAT-comp with Matplotlib and Cartopy
----------------------------------------
+GeoCAT-ncomp with Matplotlib and Cartopy
+----------------------------------------
 
 
-:meth:`geocat.comp.linint2` example
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+:meth:`geocat.ncomp.linint2` example
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
    
 .. literalinclude:: _static/scripts/examples/matplotlib/mpl_linint2.py
    :language: python
@@ -30,8 +30,8 @@ GeoCAT-comp with Matplotlib and Cartopy
    :align: center
 
 
-:meth:`geocat.comp.linint2_points` example
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+:meth:`geocat.ncomp.linint2_points` example
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. literalinclude:: _static/scripts/examples/matplotlib/mpl_linint2points.py
    :language: python

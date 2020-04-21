@@ -3,7 +3,7 @@
 
 import numpy as np
 import xarray as xr
-import geocat.comp
+import geocat.ncomp
 import cartopy.crs as ccrs
 import matplotlib.pyplot as plt
 from matplotlib import cm
@@ -17,12 +17,12 @@ sst = ds.TEMP[0,0,:,:]
 lat = ds.LAT[:]
 lon = ds.LON[:]
 
-# Provide (output) interpolation grid and call `linint2` function from `geocat-comp`
+# Provide (output) interpolation grid and call `linint2` function from `geocat-ncomp`
 newlat = np.linspace(min(lat), max(lat), 24)
 newlon = np.linspace(min(lon), max(lon), 72)
 
-# Invoke `linint2` from `geocat-comp`
-newsst = geocat.comp.linint2(sst, newlon, newlat, False)
+# Invoke `linint2` from `geocat-ncomp`
+newsst = geocat.ncomp.linint2(sst, newlon, newlat, False)
 
 projection = ccrs.PlateCarree()
 axes_class = (GeoAxes, dict(map_projection=projection))
