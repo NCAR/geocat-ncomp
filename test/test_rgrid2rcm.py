@@ -1,7 +1,7 @@
 import numpy as np
 import numpy.testing as nt
 import xarray as xr
-import geocat.comp as gc
+import geocat.ncomp as gn
 
 import sys
 import time
@@ -52,19 +52,19 @@ class Test_rgrid2rcm(ut.TestCase):
     """
 
     def test_rgrid2rcm_float64_nom(self):
-        nt.assert_array_almost_equal(fo_nom_expected, gc.rgrid2rcm(lat, lon, fi_nom.astype(np.float64), lat2d, lon2d))
+        nt.assert_array_almost_equal(fo_nom_expected, gn.rgrid2rcm(lat, lon, fi_nom.astype(np.float64), lat2d, lon2d))
 
     def test_rgrid2rcm_float64_nan(self):
-        nt.assert_array_almost_equal(fo_nan_expected, gc.rgrid2rcm(lat, lon, fi_nan.astype(np.float64), lat2d, lon2d))
+        nt.assert_array_almost_equal(fo_nan_expected, gn.rgrid2rcm(lat, lon, fi_nan.astype(np.float64), lat2d, lon2d))
 
     def test_rgrid2rcm_float64_msg(self):
-        nt.assert_array_almost_equal(fo_msg_expected, gc.rgrid2rcm(lat, lon, fi_msg.astype(np.float64), lat2d, lon2d, msg=msg64))
+        nt.assert_array_almost_equal(fo_msg_expected, gn.rgrid2rcm(lat, lon, fi_msg.astype(np.float64), lat2d, lon2d, msg=msg64))
 
     def test_rgrid2rcm_float32_nom(self):
-        nt.assert_array_almost_equal(fo_nom_expected, gc.rgrid2rcm(lat, lon, fi_nom.astype(np.float32), lat2d, lon2d))
+        nt.assert_array_almost_equal(fo_nom_expected, gn.rgrid2rcm(lat, lon, fi_nom.astype(np.float32), lat2d, lon2d))
 
     def test_rgrid2rcm_float32_nan(self):
-        nt.assert_array_almost_equal(fo_nan_expected, gc.rgrid2rcm(lat, lon, fi_nan.astype(np.float32), lat2d, lon2d))
+        nt.assert_array_almost_equal(fo_nan_expected, gn.rgrid2rcm(lat, lon, fi_nan.astype(np.float32), lat2d, lon2d))
 
     def test_rgrid2rcm_float32_msg(self):
-        nt.assert_array_almost_equal(fo_msg_expected, gc.rgrid2rcm(lat, lon, fi_msg.astype(np.float32), lat2d, lon2d, msg=msg32))
+        nt.assert_array_almost_equal(fo_msg_expected, gn.rgrid2rcm(lat, lon, fi_msg.astype(np.float32), lat2d, lon2d, msg=msg32))
