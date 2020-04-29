@@ -23,7 +23,7 @@
 .. |
 
 GeoCAT-ncomp
-===========
+============
 
 .. toctree::
    :maxdepth: 2

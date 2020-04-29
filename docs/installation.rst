@@ -80,7 +80,7 @@ compilers, although the following commands should work on both Linux and macOS::
 
 
 Installing GeoCAT-ncomp
-^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^
  
 Once the dependencies listed above are installed, you can install GeoCAT-ncomp
 with the command::
@@ -97,7 +97,7 @@ configure your build environment.
 
 
 Testing a GeoCAT-ncomp build
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 A GeoCAT-ncomp build can be tested from the root directory of the source code
 repository using the following command::

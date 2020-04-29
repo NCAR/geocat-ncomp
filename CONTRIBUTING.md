@@ -1,8 +1,8 @@
 Wrapping NComp functions using Cython
 =====================================
-1. Add function signature from NComp to `$GEOCATNCOMP/geocat/ncomp/libncomp.pxd` under the 'cdef extern from "ncomp/wrapper.h"' section. *Make sure to include "nogil" at the end of the function signature to release the Python global interpreter lock, which is essential for multithreaded performace with Dask.*
+1. Add function signature from NComp to `$GEOCATNCOMP/src/geocat/ncomp/libncomp.pxd` under the 'cdef extern from "ncomp/wrapper.h"' section. *Make sure to include "nogil" at the end of the function signature to release the Python global interpreter lock, which is essential for multithreaded performace with Dask.*
 
-2. Create a new function in `$GEOCATNCOMP/geocat/ncomp/_ncomp.pyx`, prepended with an underscore (`_linint2` for example). The Cython function signature acts as the "numpy interface" to NComp. All arguments should be explicitly typed as either np.ndarray or an appropriate C type (int, double, etc).
+2. Create a new function in `$GEOCATNCOMP/src/geocat/ncomp/_ncomp.pyx`, prepended with an underscore (`_linint2` for example). The Cython function signature acts as the "numpy interface" to NComp. All arguments should be explicitly typed as either np.ndarray or an appropriate C type (int, double, etc).
 
 3. Create a unified _ncomp.Array object (which abstracts a NumPy array and an ncomp_array* into a single Python object) for each input np.ndarray using the `_ncomp.Array.from_np` builder method. This `Array` object allocates and deallocates ncomp_array structs as needed.
 
@@ -14,7 +14,7 @@ Wrapping NComp functions using Cython
 
 Wrapping Cython functions in Python
 ===================================
-1. Create a new function in `$GEOCATNCOMP/geocat/ncomp/__init__.py` (`linint2` for example).
+1. Create a new function in `$GEOCATNCOMP/src/geocat/ncomp/__init__.py` (`linint2` for example).
 
 2. Include `meta=True` as a keyword argument for any function that could potentially retain metadata; retaining metadata will be the default behavior.
 
