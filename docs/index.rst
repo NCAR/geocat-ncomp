@@ -1,11 +1,11 @@
-.. geocat-comp documentation master file, created by
+.. geocat-ncomp documentation master file, created by
    sphinx-quickstart on Mon Aug 19 14:29:04 2019.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
 .. meta::
-   :description: GeoCAT-comp Python module
-   :keywords: geocat, geocat-comp, geocat comp, geocatcomp, geocat.comp,
+   :description: GeoCAT-ncomp Python module
+   :keywords: geocat, geocat-ncomp, geocat ncomp, geocatncomp, geocat.ncomp,
               wrf, python, wrf-python, weather research and forecasting,
               weather research and forecasting model, model, weather,
               numerical weather prediction, model, matplotlib, cartopy,
@@ -22,8 +22,8 @@
 .. |
 .. |
 
-GeoCAT-comp
-===========
+GeoCAT-ncomp
+============
 
 .. toctree::
    :maxdepth: 2
