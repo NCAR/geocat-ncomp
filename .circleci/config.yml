@@ -1,23 +1,21 @@
 version: 2
 # Tell CircleCI to use this workflow
-#workflows:
-#  version: 2
-#  default:
-#    jobs:
-#      - build-libncomp
-#      - python-3.6:
-#          requires:
-#            - build-libncomp
-#      - python-3.7:
-#          requires:
-#            - build-libncomp
-#      - python-3.8:
-#          requires:
-#            - build-libncomp
+workflows:
+  version: 2
+  default:
+    jobs:
+      - build-libncomp
+      - python-3.6:
+          requires:
+            - build-libncomp
+      - python-3.7:
+          requires:
+            - build-libncomp
+      - python-3.8:
+          requires:
+            - build-libncomp
 
 default-job: &default-job
-  requires:
-    - build-libncomp
   docker:
     - image: conda/miniconda3:latest
   steps:
