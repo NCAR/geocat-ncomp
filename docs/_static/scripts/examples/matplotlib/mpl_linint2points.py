@@ -2,17 +2,17 @@
 mpl_linint2points.py
 ==============
 This script illustrates the following concepts:
-   - Usage of geocat-comp's linint2_points function
+   - Usage of geocat-ncomp's linint2_points function
    - Bilinear interpolation from a rectilinear grid to an unstructured grid or locations
    - Usage of geocat-datafiles for accessing NetCDF files
    - Usage of geocat-viz plotting convenience functions
 
 See following GitHub repositories to see further information about the function and to access data:
-    - linint2_points function: https://github.com/NCAR/geocat-comp
+    - linint2_points function: https://github.com/NCAR/geocat-ncomp
     - "sst.nc" data file: https://github.com/NCAR/geocat-datafiles/tree/master/netcdf_files
 
 Dependencies:
-    - geocat.comp
+    - geocat.ncomp
     - geocat.datafiles (Not necessary but for NetCDF data file access convenience)
     - geocat.viz (Not necessary but for plotting convenience)
     - Numpy
@@ -25,7 +25,7 @@ Dependencies:
 
 ###############################################################################
 # Import packages:
-import geocat.comp
+import geocat.ncomp
 import geocat.datafiles as gdf
 import geocat.viz.util as gvutil
 
@@ -49,7 +49,7 @@ lon = ds.LON[:]
 
 
 ###############################################################################
-# Invoke geocat.comp.linint2_points():
+# Invoke geocat.ncomp.linint2_points():
 
 # Provide (output) interpolation locations. This script uses 3000 arbitrary locations world-wide in order to demonstrate
 # an extensive comparison of the linint2_points outputs to the original grid throughout the globe. The function can be
@@ -57,8 +57,8 @@ lon = ds.LON[:]
 newlat = np.random.uniform(low=min(lat), high=max(lat), size=(3000,))
 newlon = np.random.uniform(low=min(lon), high=max(lon), size=(3000,))
 
-# Call `linint2_points` from `geocat-comp`
-newsst = geocat.comp.linint2_points(sst, newlon, newlat, False)
+# Call `linint2_points` from `geocat-ncomp`
+newsst = geocat.ncomp.linint2_points(sst, newlon, newlat, False)
 
 
 ###############################################################################

@@ -4,35 +4,31 @@ User API
 Routines
 --------
 
-GeoCAT-comp routines
-^^^^^^^^^^^^^^^^^^^^
+GeoCAT-ncomp routines
+^^^^^^^^^^^^^^^^^^^^^
 
 .. autosummary::
    :nosignatures:
    :toctree: ./generated/
 
-   geocat.comp.linint2
+   geocat.ncomp.linint2
 
-   geocat.comp.eofunc
+   geocat.ncomp.eofunc
 
-   geocat.comp.eofunc_ts
+   geocat.ncomp.eofunc_ts
 
-   geocat.comp.moc_globe_atl
+   geocat.ncomp.moc_globe_atl
 
-   geocat.comp.ndpolyfit
+   geocat.ncomp.dpres_plevel
 
-   geocat.comp.ndpolyval
+   geocat.ncomp.rcm2points
 
-   geocat.comp.dpres_plevel
+   geocat.ncomp.rcm2rgrid
 
-   geocat.comp.rcm2points
+   geocat.ncomp.linint2_points
 
-   geocat.comp.rcm2rgrid
+   geocat.ncomp.rgrid2rcm
 
-   geocat.comp.linint2_points
+   geocat.ncomp.triple2grid
 
-   geocat.comp.rgrid2rcm
-
-   geocat.comp.triple2grid
-
-   geocat.comp.grid2triple
+   geocat.ncomp.grid2triple
