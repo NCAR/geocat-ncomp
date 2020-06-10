@@ -4,16 +4,16 @@ workflows:
   version: 2
   default:
     jobs:
-      - "build-ncomp"
-      - "python-3.6":
+      - build-libncomp
+      - python-3.6:
           requires:
-            - "build-ncomp"
-      - "python-3.7":
+            - build-libncomp
+      - python-3.7:
           requires:
-            - "build-ncomp"
-      - "python-3.8":
+            - build-libncomp
+      - python-3.8:
           requires:
-            - "build-ncomp"
+            - build-libncomp
 
 default-job: &default-job
   docker:
@@ -23,50 +23,50 @@ default-job: &default-job
     - restore_cache:
         key: deps-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ .Environment.CIRCLE_WORKFLOW_UPSTREAM_JOB_IDS }}
     - run:
-        name: Build geocat-comp
+        name: Build geocat-ncomp
         command: ./.circleci/install-circle.sh
     - run:
         name: Run tests
         command: ./.circleci/${TEST_SCRIPT}
 
 jobs:
-  "build-ncomp":
+  build-libncomp:
     docker:
       - image: conda/miniconda3:latest
     environment:
-      NCOMP_ENV_NAME: "build-ncomp"
-      NCOMP_GIT_REPO: "https://github.com/NCAR/ncomp.git"
+      LIBNCOMP_ENV_NAME: "build-libncomp"
+      LIBNCOMP_GIT_REPO: "https://github.com/NCAR/libncomp.git"
     steps:
       - checkout
       - run:
-          name: Build NComp
-          command: ./.circleci/build-ncomp.sh
+          name: Build libNComp
+          command: ./.circleci/build-libncomp.sh
       - save_cache:
           key: deps-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ .Environment.CIRCLE_WORKFLOW_JOB_ID }}
           paths:
-            - /usr/local/envs/build-ncomp
+            - /usr/local/envs/build-libncomp
             - /usr/local/pkgs
 
-  "python-3.6":
+  python-3.6:
     <<: *default-job
     environment:
       PYTHON: "3.6"
-      ENV_NAME: "geocat-comp-dev"
-      NCOMP_ENV_NAME: "build-ncomp"
+      ENV_NAME: "geocat-ncomp-dev"
+      LIBNCOMP_ENV_NAME: "build-libncomp"
       TEST_SCRIPT: "run-checks.sh"
 
-  "python-3.7":
+  python-3.7:
     <<: *default-job
     environment:
       PYTHON: "3.7"
-      ENV_NAME: "geocat-comp-dev"
-      NCOMP_ENV_NAME: "build-ncomp"
+      ENV_NAME: "geocat-ncomp-dev"
+      LIBNCOMP_ENV_NAME: "build-libncomp"
       TEST_SCRIPT: "run-checks.sh"
 
-  "python-3.8":
+  python-3.8:
     <<: *default-job
     environment:
       PYTHON: "3.8"
-      ENV_NAME: "geocat-comp-dev"
-      NCOMP_ENV_NAME: "build-ncomp"
+      ENV_NAME: "geocat-ncomp-dev"
+      LIBNCOMP_ENV_NAME: "build-libncomp"
       TEST_SCRIPT: "run-checks.sh"

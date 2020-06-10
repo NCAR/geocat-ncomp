@@ -11,4 +11,4 @@ dependencies:
   - dask
   - distributed
   - pytest
-  - ncomp
+  - libncomp
