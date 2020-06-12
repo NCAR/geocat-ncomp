@@ -22,7 +22,7 @@ include_dirs = [os.path.join(PREFIX, 'include'), numpy.get_include()]
 extensions = [
     Extension("geocat.ncomp._ncomp", ["src/geocat/ncomp/_ncomp.pyx"],
         include_dirs=include_dirs,
-        libraries=["ncomp"],
+        libraries=["libncomp"],
 ),
 ]
 setup(
