@@ -3,7 +3,7 @@ geocat-ncomp
 
 GeoCAT-ncomp is the computational component of the [GeoCAT](https://ncar.github.io/GeoCAT) project. GeoCAT-ncomp wraps NCL's non-WRF Fortran routines into Python.
 
-GeoCAT-ncomp depends on a separate C/Fortran library called "[ncomp](https://github.com/NCAR/ncomp)", which contains these Fortran routines.
+GeoCAT-ncomp depends on a separate C/Fortran library called "[libncomp](https://github.com/NCAR/libncomp)", which contains these Fortran routines.
 
 
 Documentation
