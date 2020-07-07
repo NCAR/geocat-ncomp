@@ -9,7 +9,7 @@ jobs:
       - name: yapf
         run: |
           pip3 install yapf
-          python3 -m yapf --in-place --recursive --style google .i
+          python3 -m yapf --in-place --recursive --style google .
       - name: push
         run: |
           git config --global user.name 'GitHub Actions'
