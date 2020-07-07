@@ -12,62 +12,49 @@ class BaseEOFuncTestClass(metaclass=ABCMeta):
     _sample_data_eofunc = []
 
     # _sample_data[ 0 ]
-    _sample_data_eofunc.append(
-        [[[0, 1, 2, 3],
-          [4, 5, 6, 7],
-          [8, 9, 10, 11],
-          [12, 13, 14, 15]],
-
-         [[16, 17, 18, 19],
-          [20, 21, 22, 23],
-          [24, 25, 26, 27],
-          [28, 29, 30, 31]],
-
-         [[32, 33, 34, 35],
-          [36, 37, 38, 39],
-          [40, 41, 42, 43],
-          [44, 45, 46, 47]],
-
-         [[48, 49, 50, 51],
-          [52, 53, 54, 55],
-          [56, 57, 58, 59],
-          [60, 61, 62, 63]]]
-    )
+    _sample_data_eofunc.append([[[0, 1, 2, 3], [4, 5, 6, 7], [8, 9, 10, 11],
+                                 [12, 13, 14, 15]],
+                                [[16, 17, 18, 19], [20, 21, 22, 23],
+                                 [24, 25, 26, 27], [28, 29, 30, 31]],
+                                [[32, 33, 34, 35], [36, 37, 38, 39],
+                                 [40, 41, 42, 43], [44, 45, 46, 47]],
+                                [[48, 49, 50, 51], [52, 53, 54, 55],
+                                 [56, 57, 58, 59], [60, 61, 62, 63]]])
 
     # _sample_data[ 1 ]
     _sample_data_eofunc.append(np.arange(64, dtype='double').reshape((4, 4, 4)))
 
     # _sample_data[ 2 ]
-    tmp_data = np.asarray(
-        [0, 1, -99, -99, 4, -99, 6, -99, 8, 9, 10, -99, 12, -99, 14, 15, 16, -99, 18, -99, 20, 21, 22, -99, 24, 25,
-         26, 27, 28, -99, 30, -99, 32, 33, 34, 35, 36, -99, 38, 39, 40, -99, 42, -99, 44, 45, 46, -99, 48, 49, 50,
-         51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63],
-        dtype='double'
-    ).reshape((4, 4, 4))
+    tmp_data = np.asarray([
+        0, 1, -99, -99, 4, -99, 6, -99, 8, 9, 10, -99, 12, -99, 14, 15, 16, -99,
+        18, -99, 20, 21, 22, -99, 24, 25, 26, 27, 28, -99, 30, -99, 32, 33, 34,
+        35, 36, -99, 38, 39, 40, -99, 42, -99, 44, 45, 46, -99, 48, 49, 50, 51,
+        52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63
+    ],
+                          dtype='double').reshape((4, 4, 4))
     _sample_data_eofunc.append(tmp_data)
 
     # _sample_data[ 3 ]
-    tmp_data = np.asarray(
-        [0, 1, -99, -99, 4, -99, 6, -99, 8, 9, 10, -99, 12, -99, 14, 15, 16, -99, 18, -99, 20, 21, 22, -99, 24, 25,
-         26, 27, 28, -99, 30, -99, 32, 33, 34, 35, 36, -99, 38, 39, 40, -99, 42, -99, 44, 45, 46, -99, 48, 49, 50,
-         51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63],
-        dtype='double'
-    ).reshape((4, 4, 4))
+    tmp_data = np.asarray([
+        0, 1, -99, -99, 4, -99, 6, -99, 8, 9, 10, -99, 12, -99, 14, 15, 16, -99,
+        18, -99, 20, 21, 22, -99, 24, 25, 26, 27, 28, -99, 30, -99, 32, 33, 34,
+        35, 36, -99, 38, 39, 40, -99, 42, -99, 44, 45, 46, -99, 48, 49, 50, 51,
+        52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63
+    ],
+                          dtype='double').reshape((4, 4, 4))
     tmp_data[tmp_data == -99] = np.nan
     _sample_data_eofunc.append(tmp_data)
 
     # _sample_data[ 4 ]
     _sample_data_eofunc.append(np.arange(64, dtype='int64').reshape((4, 4, 4)))
     import os
-    here = os.path.join(
-        os.path.dirname(os.path.dirname(__file__)),
-        "resources"
-    )
+    here = os.path.join(os.path.dirname(os.path.dirname(__file__)), "resources")
     filename = os.path.join(here, "sst.nc")
     _nc_ds = xr.open_dataset(filename)
 
 
 class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
+
     def test_eofunc_pyx_01(self):
         data = self._sample_data_eofunc[1]
 
@@ -87,8 +74,10 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(100.0, properties[b'pcvar'][0], 1)
         self.assertAlmostEqual(26.66666, properties[b'eval'][0], 4)
 
-        self.assertEqual("covariance", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("covariance",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
     def test_eofunc_pyx_02(self):
         data = self._sample_data_eofunc[1]
@@ -110,16 +99,15 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(100.0, properties[b'pcvar'][0], 1)
         self.assertAlmostEqual(16.00000, properties[b'eval'][0], 4)
 
-        self.assertEqual("correlation", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("correlation",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
     def test_eofunc_pyx_03(self):
         data = self._sample_data_eofunc[1]
 
-        options = {
-            b'jopt': np.asarray(1.0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(1.0), b'pcrit': np.asarray(32.0)}
         response = _eofunc(data, 1, options)
 
         result = response[0]
@@ -136,16 +124,15 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(100.0, properties[b'pcvar'][0], 1)
         self.assertAlmostEqual(16.00000, properties[b'eval'][0], 4)
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
-        self.assertEqual("correlation", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("correlation",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
     def test_eofunc_pyx_03_1(self):
         data = np.arange(64, dtype='double').reshape((4, 4, 4))
 
-        options = {
-            b'jopt': np.asarray(1.0),
-            b'pcrit': np.asarray(32)
-        }
+        options = {b'jopt': np.asarray(1.0), b'pcrit': np.asarray(32)}
         response = _eofunc(data, 1, options)
 
         result = response[0]
@@ -162,16 +149,15 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(100.0, properties[b'pcvar'][0], 1)
         self.assertAlmostEqual(16.00000, properties[b'eval'][0], 4)
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
-        self.assertEqual("correlation", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("correlation",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
     def test_eofunc_pyx_04(self):
-        data =self._sample_data_eofunc[3]
+        data = self._sample_data_eofunc[3]
 
-        options = {
-            b'jopt': np.asarray(1.0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(1.0), b'pcrit': np.asarray(32.0)}
 
         response = _eofunc(data, 1, options)
 
@@ -179,7 +165,10 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
 
         self.assertEqual((1, 4, 4), result.shape)
 
-        expected_results = [0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257, 0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404]
+        expected_results = [
+            0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257,
+            0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404
+        ]
         for e in zip(expected_results, result.reshape((16, 1)).tolist()):
             self.assertAlmostEqual(e[0], e[1][0], 4)
 
@@ -190,8 +179,10 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(98.71625, properties[b'pcvar'][0], 1)
         self.assertAlmostEqual(14.9260, properties[b'eval'][0], 4)
 
-        self.assertEqual("correlation", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("correlation",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
 
         self.assertTrue(np.isnan(data[0, 0, 3]))
@@ -199,10 +190,7 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_pyx_05(self):
         data = self._sample_data_eofunc[3]
 
-        options = {
-            b'jopt': np.asarray(1.0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(1.0), b'pcrit': np.asarray(32.0)}
 
         response = _eofunc(data, 1, options, missing_value=np.nan)
 
@@ -210,7 +198,10 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
 
         self.assertEqual((1, 4, 4), result.shape)
 
-        expected_results = [0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257, 0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404]
+        expected_results = [
+            0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257,
+            0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404
+        ]
         for e in zip(expected_results, result.reshape((16, 1)).tolist()):
             self.assertAlmostEqual(e[0], e[1][0], 4)
 
@@ -221,8 +212,10 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(98.71625, properties[b'pcvar'][0], 1)
         self.assertAlmostEqual(14.9260, properties[b'eval'][0], 4)
 
-        self.assertEqual("correlation", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("correlation",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
 
         self.assertTrue(np.isnan(data[0, 0, 3]))
@@ -230,10 +223,7 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_pyx_06(self):
         data = self._sample_data_eofunc[3]
 
-        options = {
-            b'jopt': np.asarray(1.0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(1.0), b'pcrit': np.asarray(32.0)}
 
         with self.assertRaises(ValueError):
             _eofunc(data, 1, options, missing_value=42)
@@ -241,10 +231,7 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_pyx_07(self):
         data = self._sample_data_eofunc[2]
 
-        options = {
-            b'jopt': np.asarray(1.0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(1.0), b'pcrit': np.asarray(32.0)}
 
         response = _eofunc(data, 1, options, missing_value=-99.0)
 
@@ -252,7 +239,10 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
 
         self.assertEqual((1, 4, 4), result.shape)
 
-        expected_results = [0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257, 0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404]
+        expected_results = [
+            0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257,
+            0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404
+        ]
         for e in zip(expected_results, result.reshape((16, 1)).tolist()):
             self.assertAlmostEqual(e[0], e[1][0], 4)
 
@@ -263,8 +253,10 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(98.71625, properties[b'pcvar'][0], 1)
         self.assertAlmostEqual(14.9260, properties[b'eval'][0], 4)
 
-        self.assertEqual("correlation", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("correlation",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
 
         self.assertAlmostEqual(-99.0, data[0, 0, 3], 1)
@@ -272,18 +264,18 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_pyx_08(self):
         data = self._sample_data_eofunc[2]
 
-        options = {
-            b'jopt': np.asarray(1.0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(1.0), b'pcrit': np.asarray(32.0)}
 
-        response = _eofunc(data, 1, options, missing_value=-99) #None-double
+        response = _eofunc(data, 1, options, missing_value=-99)  #None-double
 
         result = response[0]
 
         self.assertEqual((1, 4, 4), result.shape)
 
-        expected_results = [0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257, 0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404]
+        expected_results = [
+            0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257,
+            0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404
+        ]
         for e in zip(expected_results, result.reshape((16, 1)).tolist()):
             self.assertAlmostEqual(e[0], e[1][0], 4)
 
@@ -294,8 +286,10 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(98.71625, properties[b'pcvar'][0], 1)
         self.assertAlmostEqual(14.9260, properties[b'eval'][0], 4)
 
-        self.assertEqual("correlation", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("correlation",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
 
         self.assertAlmostEqual(-99.0, data[0, 0, 3], 1)
@@ -303,17 +297,18 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_pyx_09(self):
         data = self._sample_data_eofunc[2]
 
-        options = {
-            b'jopt': np.asarray(1.0),
-            b'pcrit': np.asarray(32.0)
-        }
-        response = _eofunc(data, 1, options, missing_value=np.int8(-99))  # None-double np.number
+        options = {b'jopt': np.asarray(1.0), b'pcrit': np.asarray(32.0)}
+        response = _eofunc(data, 1, options,
+                           missing_value=np.int8(-99))  # None-double np.number
 
         result = response[0]
 
         self.assertEqual((1, 4, 4), result.shape)
 
-        expected_results = [0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257, 0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404]
+        expected_results = [
+            0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257,
+            0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404
+        ]
         for e in zip(expected_results, result.reshape((16, 1)).tolist()):
             self.assertAlmostEqual(e[0], e[1][0], 4)
 
@@ -324,8 +319,10 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(98.71625, properties[b'pcvar'][0], 1)
         self.assertAlmostEqual(14.9260, properties[b'eval'][0], 4)
 
-        self.assertEqual("correlation", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("correlation",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
 
         self.assertAlmostEqual(-99.0, data[0, 0, 3], 1)
@@ -349,8 +346,10 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(100.0, properties[b'pcvar'][0], 1)
         self.assertAlmostEqual(26.66666, properties[b'eval'][0], 4)
 
-        self.assertEqual("covariance", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("covariance",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
     def test_eofunc_pyx_11(self):
         data = self._sample_data_eofunc[4]
@@ -358,7 +357,10 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
         options = {}
         accepted_neval = int(1)
         missing_value = np.nan
-        response = _eofunc(data, accepted_neval, options, missing_value=missing_value)
+        response = _eofunc(data,
+                           accepted_neval,
+                           options,
+                           missing_value=missing_value)
 
         result = response[0]
 
@@ -374,11 +376,14 @@ class Test_pyx_eofunc(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(100.0, properties[b'pcvar'][0], 1)
         self.assertAlmostEqual(26.66666, properties[b'eval'][0], 4)
 
-        self.assertEqual("covariance", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("covariance",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
 
 class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
+
     def test_eofunc_n_pyx_01(self):
         data = self._sample_data_eofunc[1]
 
@@ -398,15 +403,15 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(100.0, properties[b'pcvar'][0], 1)
         self.assertAlmostEqual(426.66666, properties[b'eval'][0], 4)
 
-        self.assertEqual("covariance", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("covariance",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
     def test_eofunc_n_pyx_02(self):
         data = self._sample_data_eofunc[1]
 
-        options = {
-            b'jopt': np.asarray(1)
-        }
+        options = {b'jopt': np.asarray(1)}
 
         response = _eofunc_n(data, 1, 1, options)
 
@@ -424,16 +429,15 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(100.0, properties[b'pcvar'][0], 1)
         self.assertAlmostEqual(16.0000, properties[b'eval'][0], 4)
 
-        self.assertEqual("correlation", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("correlation",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
     def test_eofunc_n_pyx_03(self):
         data = self._sample_data_eofunc[1]
 
-        options = {
-            b'jopt': np.asarray(0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(0), b'pcrit': np.asarray(32.0)}
 
         response = _eofunc_n(data, 1, 0, options)
 
@@ -452,16 +456,15 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(6826.6667, properties[b'eval'][0], 4)
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
 
-        self.assertEqual("covariance", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("covariance",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
     def test_eofunc_n_pyx_03_1(self):
         data = self._sample_data_eofunc[1]
 
-        options = {
-            b'jopt': np.asarray(0),
-            b'pcrit': np.asarray(32)
-        }
+        options = {b'jopt': np.asarray(0), b'pcrit': np.asarray(32)}
 
         response = _eofunc_n(data, 1, 0, options)
 
@@ -480,16 +483,15 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(6826.6667, properties[b'eval'][0], 4)
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
 
-        self.assertEqual("covariance", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("covariance",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
     def test_eofunc_n_pyx_04(self):
         data = self._sample_data_eofunc[3]
 
-        options = {
-            b'jopt': np.asarray(0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(0), b'pcrit': np.asarray(32.0)}
 
         response = _eofunc_n(data, 1, 1, options)
 
@@ -497,7 +499,10 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
 
         self.assertEqual((1, 4, 4), result.shape)
 
-        expected_results = [0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0, 0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139]
+        expected_results = [
+            0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0,
+            0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139
+        ]
         for e in zip(expected_results, result.reshape((16, 1)).tolist()):
             if (e[0] != -99):
                 self.assertAlmostEqual(e[0], e[1][0], 4)
@@ -512,18 +517,17 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(339.0166, properties[b'eval'][0], 4)
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
 
-        self.assertEqual("covariance", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("covariance",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
         self.assertTrue(np.isnan(data[0, 0, 3]))
 
     def test_eofunc_n_pyx_05(self):
         data = self._sample_data_eofunc[3]
 
-        options = {
-            b'jopt': np.asarray(0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(0), b'pcrit': np.asarray(32.0)}
 
         response = _eofunc_n(data, 1, 1, options, missing_value=np.nan)
 
@@ -531,7 +535,10 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
 
         self.assertEqual((1, 4, 4), result.shape)
 
-        expected_results = [0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0, 0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139]
+        expected_results = [
+            0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0,
+            0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139
+        ]
         for e in zip(expected_results, result.reshape((16, 1)).tolist()):
             if (e[0] != -99):
                 self.assertAlmostEqual(e[0], e[1][0], 4)
@@ -546,18 +553,17 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(339.0166, properties[b'eval'][0], 4)
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
 
-        self.assertEqual("covariance", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("covariance",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
         self.assertTrue(np.isnan(data[0, 0, 3]))
 
     def test_eofunc_n_pyx_06(self):
         data = self._sample_data_eofunc[3]
 
-        options = {
-            b'jopt': np.asarray(0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(0), b'pcrit': np.asarray(32.0)}
 
         with self.assertRaises(ValueError):
             response = _eofunc_n(data, 1, 1, options, missing_value=42)
@@ -565,18 +571,22 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
     def test_eofunc_n_pyx_07(self):
         data = self._sample_data_eofunc[2]
 
-        options = {
-            b'jopt': np.asarray(0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(0), b'pcrit': np.asarray(32.0)}
 
-        response = _eofunc_n(data, 1, 1, options, missing_value=np.float64(-99.0))
+        response = _eofunc_n(data,
+                             1,
+                             1,
+                             options,
+                             missing_value=np.float64(-99.0))
 
         result = response[0]
 
         self.assertEqual((1, 4, 4), result.shape)
 
-        expected_results = [0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0, 0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139]
+        expected_results = [
+            0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0,
+            0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139
+        ]
         for e in zip(expected_results, result.reshape((16, 1)).tolist()):
             if (e[0] != -99):
                 self.assertAlmostEqual(e[0], e[1][0], 4)
@@ -591,18 +601,17 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(339.0166, properties[b'eval'][0], 4)
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
 
-        self.assertEqual("covariance", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("covariance",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
         self.assertEqual(-99, data[0, 0, 3])
 
     def test_eofunc_n_pyx_08(self):
         data = self._sample_data_eofunc[2]
 
-        options = {
-            b'jopt': np.asarray(0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(0), b'pcrit': np.asarray(32.0)}
 
         response = _eofunc_n(data, 1, 1, options, missing_value=-99)
 
@@ -610,7 +619,10 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
 
         self.assertEqual((1, 4, 4), result.shape)
 
-        expected_results = [0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0, 0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139]
+        expected_results = [
+            0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0,
+            0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139
+        ]
         for e in zip(expected_results, result.reshape((16, 1)).tolist()):
             if (e[0] != -99):
                 self.assertAlmostEqual(e[0], e[1][0], 4)
@@ -625,18 +637,17 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(339.0166, properties[b'eval'][0], 4)
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
 
-        self.assertEqual("covariance", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("covariance",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
         self.assertEqual(-99, data[0, 0, 3])
 
     def test_eofunc_n_pyx_09(self):
         data = self._sample_data_eofunc[2]
 
-        options = {
-            b'jopt': np.asarray(0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(0), b'pcrit': np.asarray(32.0)}
 
         response = _eofunc_n(data, 1, 1, options, missing_value=np.int8(-99))
 
@@ -644,7 +655,10 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
 
         self.assertEqual((1, 4, 4), result.shape)
 
-        expected_results = [0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0, 0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139]
+        expected_results = [
+            0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0,
+            0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139
+        ]
         for e in zip(expected_results, result.reshape((16, 1)).tolist()):
             if (e[0] != -99):
                 self.assertAlmostEqual(e[0], e[1][0], 4)
@@ -659,18 +673,17 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(339.0166, properties[b'eval'][0], 4)
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
 
-        self.assertEqual("covariance", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("covariance",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
         self.assertEqual(-99, data[0, 0, 3])
 
     def test_eofunc_n_pyx_10(self):
         data = self._sample_data_eofunc[2]
 
-        options = {
-            b'jopt': np.asarray(0),
-            b'pcrit': np.asarray(32.0)
-        }
+        options = {b'jopt': np.asarray(0), b'pcrit': np.asarray(32.0)}
 
         response = _eofunc_n(data, 1, 1, options, missing_value=np.int8(-99))
 
@@ -678,7 +691,10 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
 
         self.assertEqual((1, 4, 4), result.shape)
 
-        expected_results = [0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0, 0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139]
+        expected_results = [
+            0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0,
+            0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139
+        ]
         for e in zip(expected_results, result.reshape((16, 1)).tolist()):
             if (e[0] != -99):
                 self.assertAlmostEqual(e[0], e[1][0], 4)
@@ -693,13 +709,16 @@ class Test_pyx_eofunc_n(TestCase, BaseEOFuncTestClass):
         self.assertAlmostEqual(339.0166, properties[b'eval'][0], 4)
         self.assertAlmostEqual(32.00000, properties[b'pcrit'][0], 4)
 
-        self.assertEqual("covariance", properties[b'matrix'].tostring().decode('ascii')[:-1])
-        self.assertEqual("transpose", properties[b'method'].tostring().decode('ascii')[:-1])
+        self.assertEqual("covariance",
+                         properties[b'matrix'].tostring().decode('ascii')[:-1])
+        self.assertEqual("transpose",
+                         properties[b'method'].tostring().decode('ascii')[:-1])
 
         self.assertEqual(-99, data[0, 0, 3])
 
 
 class Test_eofunc(TestCase, BaseEOFuncTestClass):
+
     def test_eofunc_00(self):
         data = self._sample_data_eofunc[0]
 
@@ -844,7 +863,10 @@ class Test_eofunc(TestCase, BaseEOFuncTestClass):
 
         self.assertEqual((1, 4, 4), eof.shape)
 
-        expected_results = [0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257, 0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404]
+        expected_results = [
+            0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257,
+            0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404
+        ]
         for e in zip(expected_results, eof.reshape((16, 1)).tolist()):
             self.assertAlmostEqual(e[0], e[1][0], 4)
 
@@ -863,13 +885,20 @@ class Test_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_09(self):
         data = self._sample_data_eofunc[3]
 
-        results = eofunc(data, 1, jopt="correlation", pcrit=32, missing_value=np.nan)
+        results = eofunc(data,
+                         1,
+                         jopt="correlation",
+                         pcrit=32,
+                         missing_value=np.nan)
         eof = results.data
         attrs = results.attrs
 
         self.assertEqual((1, 4, 4), eof.shape)
 
-        expected_results = [0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257, 0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404]
+        expected_results = [
+            0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257,
+            0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404
+        ]
         for e in zip(expected_results, eof.reshape((16, 1)).tolist()):
             self.assertAlmostEqual(e[0], e[1][0], 4)
 
@@ -894,13 +923,20 @@ class Test_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_11(self):
         data = self._sample_data_eofunc[2]
 
-        results = eofunc(data, 1, jopt="correlation", pcrit=32, missing_value=-99.0)
+        results = eofunc(data,
+                         1,
+                         jopt="correlation",
+                         pcrit=32,
+                         missing_value=-99.0)
         eof = results.data
         attrs = results.attrs
 
         self.assertEqual((1, 4, 4), eof.shape)
 
-        expected_results = [0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257, 0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404]
+        expected_results = [
+            0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257,
+            0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404
+        ]
         for e in zip(expected_results, eof.reshape((16, 1)).tolist()):
             self.assertAlmostEqual(e[0], e[1][0], 4)
 
@@ -919,13 +955,20 @@ class Test_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_12(self):
         data = self._sample_data_eofunc[2]
 
-        results = eofunc(data, 1, jopt="correlation", pcrit=32, missing_value=-99) #None-double
+        results = eofunc(data,
+                         1,
+                         jopt="correlation",
+                         pcrit=32,
+                         missing_value=-99)  #None-double
         eof = results.data
         attrs = results.attrs
 
         self.assertEqual((1, 4, 4), eof.shape)
 
-        expected_results = [0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257, 0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404]
+        expected_results = [
+            0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257,
+            0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404
+        ]
         for e in zip(expected_results, eof.reshape((16, 1)).tolist()):
             self.assertAlmostEqual(e[0], e[1][0], 4)
 
@@ -944,13 +987,20 @@ class Test_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_13(self):
         data = self._sample_data_eofunc[2]
 
-        results = eofunc(data, 1, jopt="correlation", pcrit=32, missing_value=np.int8(-99))  # None-double np.number
+        results = eofunc(data,
+                         1,
+                         jopt="correlation",
+                         pcrit=32,
+                         missing_value=np.int8(-99))  # None-double np.number
         eof = results.data
         attrs = results.attrs
 
         self.assertEqual((1, 4, 4), eof.shape)
 
-        expected_results = [0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257, 0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404]
+        expected_results = [
+            0.0600, 0.1257, 0.1778, 0.2675, 0.1257, 0.1778, 0.3404, 0.1257,
+            0.3404, 0.2675, 0.1257, 0.1778, 0.3404, 0.3404, 0.3404, 0.3404
+        ]
         for e in zip(expected_results, eof.reshape((16, 1)).tolist()):
             self.assertAlmostEqual(e[0], e[1][0], 4)
 
@@ -1132,7 +1182,10 @@ class Test_eofunc(TestCase, BaseEOFuncTestClass):
 
         self.assertEqual((1, 4, 4), eof.shape)
 
-        expected_results = [0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0, 0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139]
+        expected_results = [
+            0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0,
+            0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139
+        ]
         for e in zip(expected_results, eof.reshape((16, 1)).tolist()):
             if (e[0] != -99):
                 self.assertAlmostEqual(e[0], e[1][0], 4)
@@ -1154,13 +1207,21 @@ class Test_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_n_05(self):
         data = self._sample_data_eofunc[3]
 
-        results = eofunc(data, 1, time_dim=1, jopt="covariance", pcrit=32, missing_value=np.nan)
+        results = eofunc(data,
+                         1,
+                         time_dim=1,
+                         jopt="covariance",
+                         pcrit=32,
+                         missing_value=np.nan)
         eof = results.data
         attrs = results.attrs
 
         self.assertEqual((1, 4, 4), eof.shape)
 
-        expected_results = [0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0, 0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139]
+        expected_results = [
+            0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0,
+            0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139
+        ]
         for e in zip(expected_results, eof.reshape((16, 1)).tolist()):
             if (e[0] != -99):
                 self.assertAlmostEqual(e[0], e[1][0], 4)
@@ -1188,13 +1249,21 @@ class Test_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_n_07(self):
         data = self._sample_data_eofunc[2]
 
-        results = eofunc(data, 1, time_dim=1, jopt="covariance", pcrit=32, missing_value=np.float64(-99.0))
+        results = eofunc(data,
+                         1,
+                         time_dim=1,
+                         jopt="covariance",
+                         pcrit=32,
+                         missing_value=np.float64(-99.0))
         eof = results.data
         attrs = results.attrs
 
         self.assertEqual((1, 4, 4), eof.shape)
 
-        expected_results = [0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0, 0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139]
+        expected_results = [
+            0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0,
+            0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139
+        ]
         for e in zip(expected_results, eof.reshape((16, 1)).tolist()):
             if (e[0] != -99):
                 self.assertAlmostEqual(e[0], e[1][0], 4)
@@ -1216,13 +1285,21 @@ class Test_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_n_08(self):
         data = self._sample_data_eofunc[2]
 
-        results = eofunc(data, 1, time_dim=1, jopt="covariance", pcrit=32, missing_value=-99)
+        results = eofunc(data,
+                         1,
+                         time_dim=1,
+                         jopt="covariance",
+                         pcrit=32,
+                         missing_value=-99)
         eof = results.data
         attrs = results.attrs
 
         self.assertEqual((1, 4, 4), eof.shape)
 
-        expected_results = [0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0, 0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139]
+        expected_results = [
+            0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0,
+            0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139
+        ]
         for e in zip(expected_results, eof.reshape((16, 1)).tolist()):
             if (e[0] != -99):
                 self.assertAlmostEqual(e[0], e[1][0], 4)
@@ -1244,13 +1321,21 @@ class Test_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_n_09(self):
         data = self._sample_data_eofunc[2]
 
-        results = eofunc(data, 1, time_dim=1, jopt="covariance", pcrit=32, missing_value=np.int8(-99))
+        results = eofunc(data,
+                         1,
+                         time_dim=1,
+                         jopt="covariance",
+                         pcrit=32,
+                         missing_value=np.int8(-99))
         eof = results.data
         attrs = results.attrs
 
         self.assertEqual((1, 4, 4), eof.shape)
 
-        expected_results = [0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0, 0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139]
+        expected_results = [
+            0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0,
+            0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139
+        ]
         for e in zip(expected_results, eof.reshape((16, 1)).tolist()):
             if (e[0] != -99):
                 self.assertAlmostEqual(e[0], e[1][0], 4)
@@ -1272,13 +1357,21 @@ class Test_eofunc(TestCase, BaseEOFuncTestClass):
     def test_eofunc_n_10(self):
         data = self._sample_data_eofunc[2]
 
-        results = eofunc(data, 1, time_dim=1, jopt="covariance", pcrit=32, missing_value=np.int8(-99))
+        results = eofunc(data,
+                         1,
+                         time_dim=1,
+                         jopt="covariance",
+                         pcrit=32,
+                         missing_value=np.int8(-99))
         eof = results.data
         attrs = results.attrs
 
         self.assertEqual((1, 4, 4), eof.shape)
 
-        expected_results = [0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0, 0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139]
+        expected_results = [
+            0.3139, 0.1243, 0.1274, -99.0, 0.3139, 0.0318, 0.3139, -99.0,
+            0.3139, 0.2821, 0.3139, 0.0303, 0.3139, 0.3139, 0.3139, 0.3139
+        ]
         for e in zip(expected_results, eof.reshape((16, 1)).tolist()):
             if (e[0] != -99):
                 self.assertAlmostEqual(e[0], e[1][0], 4)
@@ -1304,38 +1397,28 @@ class Test_eofunc(TestCase, BaseEOFuncTestClass):
 
         expected_response = self._nc_ds.evec
 
-        np.testing.assert_array_almost_equal(
-            expected_response.data,
-            actual_response.data
-        )
+        np.testing.assert_array_almost_equal(expected_response.data,
+                                             actual_response.data)
 
         np.testing.assert_array_almost_equal(
             expected_response.attrs["eval_transpose"],
-            actual_response.attrs["eval_transpose"]
-        )
+            actual_response.attrs["eval_transpose"])
 
-        np.testing.assert_array_almost_equal(
-            expected_response.attrs["eval"],
-            actual_response.attrs["eval"]
-        )
+        np.testing.assert_array_almost_equal(expected_response.attrs["eval"],
+                                             actual_response.attrs["eval"])
 
-        np.testing.assert_array_almost_equal(
-            expected_response.attrs["pcvar"],
-            actual_response.attrs["pcvar"]
-        )
+        np.testing.assert_array_almost_equal(expected_response.attrs["pcvar"],
+                                             actual_response.attrs["pcvar"])
 
-        np.testing.assert_equal(
-            actual_response.attrs["matrix"],
-            expected_response.attrs["matrix"]
-        )
+        np.testing.assert_equal(actual_response.attrs["matrix"],
+                                expected_response.attrs["matrix"])
 
-        np.testing.assert_equal(
-            actual_response.attrs["method"],
-            expected_response.attrs["method"]
-        )
+        np.testing.assert_equal(actual_response.attrs["method"],
+                                expected_response.attrs["method"])
 
 
 class Test_pyx_eofunc_ts(TestCase, BaseEOFuncTestClass):
+
     def test_01(self):
         sst = self._nc_ds.sst
         evec = self._nc_ds.evec
@@ -1345,29 +1428,21 @@ class Test_pyx_eofunc_ts(TestCase, BaseEOFuncTestClass):
         response = _eofunc_ts(properly_arranged, evec.data)
 
         actual_tsout = response[0]
-        np.testing.assert_equal(
-            actual_tsout.shape,
-            expected_tsout.shape
-        )
+        np.testing.assert_equal(actual_tsout.shape, expected_tsout.shape)
 
-        np.testing.assert_array_almost_equal(
-            actual_tsout,
-            expected_tsout.data
-        )
+        np.testing.assert_array_almost_equal(actual_tsout, expected_tsout.data)
 
         actual_attrs = response[1]
-        np.testing.assert_array_almost_equal(
-            actual_attrs[b"ts_mean"],
-            expected_tsout.attrs["ts_mean"]
-        )
+        np.testing.assert_array_almost_equal(actual_attrs[b"ts_mean"],
+                                             expected_tsout.attrs["ts_mean"])
 
         np.testing.assert_equal(
             actual_attrs[b"matrix"].tostring().decode('ascii')[:-1],
-            expected_tsout.attrs["matrix"]
-        )
+            expected_tsout.attrs["matrix"])
 
 
 class Test_pyx_eofunc_ts_n(TestCase, BaseEOFuncTestClass):
+
     def test_01(self):
         sst = self._nc_ds.sst
         evec = self._nc_ds.evec
@@ -1376,29 +1451,21 @@ class Test_pyx_eofunc_ts_n(TestCase, BaseEOFuncTestClass):
         response = _eofunc_ts_n(sst.data, evec.data, 0)
 
         actual_tsout = response[0]
-        np.testing.assert_equal(
-            actual_tsout.shape,
-            expected_tsout.shape
-        )
+        np.testing.assert_equal(actual_tsout.shape, expected_tsout.shape)
 
-        np.testing.assert_array_almost_equal(
-            actual_tsout,
-            expected_tsout.data
-        )
+        np.testing.assert_array_almost_equal(actual_tsout, expected_tsout.data)
 
         actual_attrs = response[1]
-        np.testing.assert_array_almost_equal(
-            actual_attrs[b"ts_mean"],
-            expected_tsout.attrs["ts_mean"]
-        )
+        np.testing.assert_array_almost_equal(actual_attrs[b"ts_mean"],
+                                             expected_tsout.attrs["ts_mean"])
 
         np.testing.assert_equal(
             actual_attrs[b"matrix"].tostring().decode('ascii')[:-1],
-            expected_tsout.attrs["matrix"]
-        )
+            expected_tsout.attrs["matrix"])
 
 
 class Test_eofunc_ts(TestCase, BaseEOFuncTestClass):
+
     def test_01(self):
         sst = self._nc_ds.sst
         evec = self._nc_ds.evec
@@ -1406,25 +1473,15 @@ class Test_eofunc_ts(TestCase, BaseEOFuncTestClass):
 
         actual_tsout = eofunc_ts(sst.data, evec.data, time_dim=0)
 
-        np.testing.assert_equal(
-            actual_tsout.shape,
-            expected_tsout.shape
-        )
+        np.testing.assert_equal(actual_tsout.shape, expected_tsout.shape)
 
-        np.testing.assert_array_almost_equal(
-            actual_tsout,
-            expected_tsout.data
-        )
+        np.testing.assert_array_almost_equal(actual_tsout, expected_tsout.data)
 
-        np.testing.assert_array_almost_equal(
-            actual_tsout.attrs["ts_mean"],
-            expected_tsout.attrs["ts_mean"]
-        )
+        np.testing.assert_array_almost_equal(actual_tsout.attrs["ts_mean"],
+                                             expected_tsout.attrs["ts_mean"])
 
-        np.testing.assert_equal(
-            actual_tsout.attrs["matrix"],
-            expected_tsout.attrs["matrix"]
-        )
+        np.testing.assert_equal(actual_tsout.attrs["matrix"],
+                                expected_tsout.attrs["matrix"])
 
     def test_02(self):
         sst = self._nc_ds.sst
@@ -1433,65 +1490,20 @@ class Test_eofunc_ts(TestCase, BaseEOFuncTestClass):
 
         actual_tsout = eofunc_ts(sst, evec, time_dim=0, meta=True)
 
-        np.testing.assert_equal(
-            actual_tsout.shape,
-            expected_tsout.shape
-        )
+        np.testing.assert_equal(actual_tsout.shape, expected_tsout.shape)
 
-        np.testing.assert_array_almost_equal(
-            actual_tsout,
-            expected_tsout.data
-        )
+        np.testing.assert_array_almost_equal(actual_tsout, expected_tsout.data)
 
-        np.testing.assert_array_almost_equal(
-            actual_tsout.attrs["ts_mean"],
-            expected_tsout.attrs["ts_mean"]
-        )
+        np.testing.assert_array_almost_equal(actual_tsout.attrs["ts_mean"],
+                                             expected_tsout.attrs["ts_mean"])
 
-        np.testing.assert_equal(
-            actual_tsout.attrs["matrix"],
-            expected_tsout.attrs["matrix"]
-        )
+        np.testing.assert_equal(actual_tsout.attrs["matrix"],
+                                expected_tsout.attrs["matrix"])
 
         for k, v in sst.attrs.items():
-            np.testing.assert_equal(
-                actual_tsout.attrs[k],
-                v
-            )
+            np.testing.assert_equal(actual_tsout.attrs[k], v)
 
-        np.testing.assert_equal(
-            actual_tsout.coords["time"].data,
-            sst.coords["time"].data
-        )
+        np.testing.assert_equal(actual_tsout.coords["time"].data,
+                                sst.coords["time"].data)
 
         # print(actual_tsout)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

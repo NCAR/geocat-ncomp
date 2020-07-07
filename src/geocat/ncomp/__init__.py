@@ -7,6 +7,7 @@ import xarray as xr
 import dask.array as da
 from dask.array.core import map_blocks
 
+
 class Error(Exception):
     """Base class for exceptions in this module."""
     pass
@@ -23,20 +24,24 @@ class CoordinateError(Error):
     an argument without a required coordinate array being passed separately."""
     pass
 
+
 class DimensionError(Error):
-     """Exception raised when the arguments of GeoCAT-comp functions argument
+    """Exception raised when the arguments of GeoCAT-comp functions argument
      has a mismatch of the necessary dimensionality."""
-     pass
+    pass
+
 
 class AttributeError(Error):
-     """Exception raised when the arguments of GeoCAT-comp functions argument
+    """Exception raised when the arguments of GeoCAT-comp functions argument
      has a mismatch of attributes with other arguments."""
-     pass
+    pass
+
 
 class MetaError(Error):
-     """Exception raised when the support for the retention of metadata is not
+    """Exception raised when the support for the retention of metadata is not
      supported."""
-     pass
+    pass
+
 
 def linint2(fi, xo, yo, icycx, msg=None, meta=True, xi=None, yi=None):
     """Interpolates a regular grid to a rectilinear one using bi-linear
@@ -207,8 +212,9 @@ def linint2(fi, xo, yo, icycx, msg=None, meta=True, xi=None, yi=None):
     if not isinstance(fi, xr.DataArray):
         fi = xr.DataArray(fi)
         if xi is None or yi is None:
-            raise CoordinateError("linint2: arguments xi and yi must be passed"
-                                  " explicitly if fi is not an xarray.DataArray.")
+            raise CoordinateError(
+                "linint2: arguments xi and yi must be passed"
+                " explicitly if fi is not an xarray.DataArray.")
 
     if xi is None:
         xi = fi.coords[fi.dims[-1]].values
@@ -246,10 +252,18 @@ def linint2(fi, xo, yo, icycx, msg=None, meta=True, xi=None, yi=None):
         # this case indicate that the two rightmost dimensions of the input
         # will be dropped from the output array, and that two new axes will be
         # added instead.
-        fo = map_blocks(_ncomp._linint2, xi, yi, fi_data, xo, yo, icycx, msg,
-                        chunks=chunks, dtype=fi.dtype,
-                        drop_axis=[fi.ndim-2, fi.ndim-1],
-                        new_axis=[fi.ndim-2, fi.ndim-1])
+        fo = map_blocks(_ncomp._linint2,
+                        xi,
+                        yi,
+                        fi_data,
+                        xo,
+                        yo,
+                        icycx,
+                        msg,
+                        chunks=chunks,
+                        dtype=fi.dtype,
+                        drop_axis=[fi.ndim - 2, fi.ndim - 1],
+                        new_axis=[fi.ndim - 2, fi.ndim - 1])
     elif isinstance(fi_data, np.ndarray):
         fo = _ncomp._linint2(xi, yi, fi_data, xo, yo, icycx, msg)
     else:
@@ -259,16 +273,17 @@ def linint2(fi, xo, yo, icycx, msg=None, meta=True, xi=None, yi=None):
                         " a dask.array.Array.")
 
     if meta:
-        coords = {k:v if k not in fi.dims[-2:]
-                  else (xo if k == fi.dims[-1] else yo)
-                  for (k, v) in fi.coords.items()}
+        coords = {
+            k: v if k not in fi.dims[-2:] else (xo if k == fi.dims[-1] else yo)
+            for (k, v) in fi.coords.items()
+        }
 
-        fo = xr.DataArray(fo, attrs=fi.attrs, dims=fi.dims,
-                              coords=coords)
+        fo = xr.DataArray(fo, attrs=fi.attrs, dims=fi.dims, coords=coords)
     else:
         fo = xr.DataArray(fo)
 
     return fo
+
 
 def rcm2rgrid(lat2d, lon2d, fi, lat1d, lon1d, msg=None, meta=False):
     """Interpolates data on a curvilinear grid (i.e. RCM, WRF, NARR) to a rectilinear grid.
@@ -368,17 +383,24 @@ def rcm2rgrid(lat2d, lon2d, fi, lat1d, lon1d, msg=None, meta=False):
 
     # Basic sanity checks
     if lat2d.shape[0] != lon2d.shape[0] or lat2d.shape[1] != lon2d.shape[1]:
-        raise DimensionError("ERROR rcm2rgrid: The input lat/lon grids must be the same size !")
+        raise DimensionError(
+            "ERROR rcm2rgrid: The input lat/lon grids must be the same size !")
 
-    if lat2d.shape[0] < 2 or lon2d.shape[0] < 2 or lat2d.shape[1] < 2 or lon2d.shape[1] < 2:
-        raise DimensionError("ERROR rcm2rgrid: The input/output lat/lon grids must have at least 2 elements !")
+    if lat2d.shape[0] < 2 or lon2d.shape[0] < 2 or lat2d.shape[
+            1] < 2 or lon2d.shape[1] < 2:
+        raise DimensionError(
+            "ERROR rcm2rgrid: The input/output lat/lon grids must have at least 2 elements !"
+        )
 
     if fi.ndim < 2:
-        raise DimensionError("ERROR rcm2rgrid: fi must be at least two dimensions !\n")
+        raise DimensionError(
+            "ERROR rcm2rgrid: fi must be at least two dimensions !\n")
 
-    if fi.shape[fi.ndim - 2] != lat2d.shape[0] or fi.shape[fi.ndim - 1] != lon2d.shape[1]:
-        raise DimensionError("ERROR rcm2rgrid: The rightmost dimensions of fi must be (nlat2d x nlon2d),"
-                             "where nlat2d and nlon2d are the size of the lat2d/lon2d arrays !")
+    if fi.shape[fi.ndim - 2] != lat2d.shape[0] or fi.shape[fi.ndim -
+                                                           1] != lon2d.shape[1]:
+        raise DimensionError(
+            "ERROR rcm2rgrid: The rightmost dimensions of fi must be (nlat2d x nlon2d),"
+            "where nlat2d and nlon2d are the size of the lat2d/lon2d arrays !")
 
     if isinstance(lat2d, xr.DataArray):
         lat2d = lat2d.values
@@ -402,16 +424,24 @@ def rcm2rgrid(lat2d, lon2d, fi, lat1d, lon1d, msg=None, meta=False):
 
         # ensure rightmost dimensions of input are not chunked
         if chunks[-2:] != [lon2d.shape, lat2d.shape]:
-            raise ChunkError("rcm2rgrid: the two rightmost dimensions of fi must"
-                             " not be chunked.")
+            raise ChunkError(
+                "rcm2rgrid: the two rightmost dimensions of fi must"
+                " not be chunked.")
 
         # ensure rightmost dimensions of output are not chunked
         chunks[-2:] = (lon1d.shape, lat1d.shape)
 
-        fo = map_blocks(_ncomp._rcm2rgrid, lat2d, lon2d, fi_data, lat1d, lon1d, msg,
-                        chunks=chunks, dtype=fi.dtype,
-                        drop_axis=[fi.ndim-2, fi.ndim-1],
-                        new_axis=[fi.ndim-2, fi.ndim-1])
+        fo = map_blocks(_ncomp._rcm2rgrid,
+                        lat2d,
+                        lon2d,
+                        fi_data,
+                        lat1d,
+                        lon1d,
+                        msg,
+                        chunks=chunks,
+                        dtype=fi.dtype,
+                        drop_axis=[fi.ndim - 2, fi.ndim - 1],
+                        new_axis=[fi.ndim - 2, fi.ndim - 1])
     elif isinstance(fi_data, np.ndarray):
         fo = _ncomp._rcm2rgrid(lat2d, lon2d, fi_data, lat1d, lon1d, msg)
     else:
@@ -421,11 +451,13 @@ def rcm2rgrid(lat2d, lon2d, fi, lat1d, lon1d, msg=None, meta=False):
                         " a dask.array.Array.")
 
     if meta and isinstance(input, xr.DataArray):
-        raise MetaError("ERROR rcm2rgrid: retention of metadata is not yet supported !")
+        raise MetaError(
+            "ERROR rcm2rgrid: retention of metadata is not yet supported !")
     else:
         fo = xr.DataArray(fo)
 
     return fo
+
 
 def rgrid2rcm(lat1d, lon1d, fi, lat2d, lon2d, msg=None, meta=False):
     """Interpolates data on a rectilinear lat/lon grid to a curvilinear grid like
@@ -516,17 +548,25 @@ def rgrid2rcm(lat1d, lon1d, fi, lat2d, lon2d, msg=None, meta=False):
 
     # Basic sanity checks
     if lat2d.shape[0] != lon2d.shape[0] or lat2d.shape[1] != lon2d.shape[1]:
-        raise DimensionError("ERROR rgrid2rcm: The output lat2D/lon2D grids must be the same size !")
+        raise DimensionError(
+            "ERROR rgrid2rcm: The output lat2D/lon2D grids must be the same size !"
+        )
 
-    if lat2d.shape[0] < 2 or lon2d.shape[0] < 2 or lat2d.shape[1] < 2 or lon2d.shape[1] < 2:
-        raise DimensionError("ERROR rgrid2rcm: The input/output lat/lon grids must have at least 2 elements !")
+    if lat2d.shape[0] < 2 or lon2d.shape[0] < 2 or lat2d.shape[
+            1] < 2 or lon2d.shape[1] < 2:
+        raise DimensionError(
+            "ERROR rgrid2rcm: The input/output lat/lon grids must have at least 2 elements !"
+        )
 
     if fi.ndim < 2:
-        raise DimensionError("ERROR rgrid2rcm: fi must be at least two dimensions !\n")
+        raise DimensionError(
+            "ERROR rgrid2rcm: fi must be at least two dimensions !\n")
 
-    if fi.shape[fi.ndim - 2] != lat1d.shape[0] or fi.shape[fi.ndim - 1] != lon1d.shape[0]:
-        raise DimensionError("ERROR rgrid2rcm: The rightmost dimensions of fi must be (nlat1d x nlon1d),"
-                             "where nlat1d and nlon1d are the size of the lat1d/lon1d arrays !")
+    if fi.shape[fi.ndim - 2] != lat1d.shape[0] or fi.shape[fi.ndim -
+                                                           1] != lon1d.shape[0]:
+        raise DimensionError(
+            "ERROR rgrid2rcm: The rightmost dimensions of fi must be (nlat1d x nlon1d),"
+            "where nlat1d and nlon1d are the size of the lat1d/lon1d arrays !")
 
     if isinstance(lat1d, xr.DataArray):
         lat1d = lat1d.values
@@ -550,16 +590,24 @@ def rgrid2rcm(lat1d, lon1d, fi, lat2d, lon2d, msg=None, meta=False):
 
         # ensure rightmost dimensions of input are not chunked
         if chunks[-2:] != [lon1d.shape, lat1d.shape]:
-            raise ChunkError("rgrid2rcm: the two rightmost dimensions of fi must"
-                             " not be chunked.")
+            raise ChunkError(
+                "rgrid2rcm: the two rightmost dimensions of fi must"
+                " not be chunked.")
 
         # ensure rightmost dimensions of output are not chunked
         chunks[-2:] = (lon2d.shape, lat2d.shape)
 
-        fo = map_blocks(_ncomp._rgrid2rcm, lat1d, lon1d, fi_data, lat2d, lon2d, msg,
-                        chunks=chunks, dtype=fi.dtype,
-                        drop_axis=[fi.ndim-2, fi.ndim-1],
-                        new_axis=[fi.ndim-2, fi.ndim-1])
+        fo = map_blocks(_ncomp._rgrid2rcm,
+                        lat1d,
+                        lon1d,
+                        fi_data,
+                        lat2d,
+                        lon2d,
+                        msg,
+                        chunks=chunks,
+                        dtype=fi.dtype,
+                        drop_axis=[fi.ndim - 2, fi.ndim - 1],
+                        new_axis=[fi.ndim - 2, fi.ndim - 1])
     elif isinstance(fi_data, np.ndarray):
         fo = _ncomp._rgrid2rcm(lat1d, lon1d, fi_data, lat2d, lon2d, msg)
     else:
@@ -569,11 +617,13 @@ def rgrid2rcm(lat1d, lon1d, fi, lat2d, lon2d, msg=None, meta=False):
                         " a dask.array.Array.")
 
     if meta and isinstance(input, xr.DataArray):
-        raise MetaError("ERROR rgrid2rcm: retention of metadata is not yet supported !")
+        raise MetaError(
+            "ERROR rgrid2rcm: retention of metadata is not yet supported !")
     else:
         fo = xr.DataArray(fo)
 
     return fo
+
 
 def eofunc(data: Iterable, neval, **kwargs) -> xr.DataArray:
     """
@@ -606,11 +656,15 @@ def eofunc(data: Iterable, neval, **kwargs) -> xr.DataArray:
     options = {}
     if "jopt" in kwargs:
         if not isinstance(kwargs["jopt"], str):
-            raise TypeError('jopt must be a string set to either "correlation" or "covariance".')
+            raise TypeError(
+                'jopt must be a string set to either "correlation" or "covariance".'
+            )
         if str.lower(kwargs["jopt"]) not in {"covariance", "correlation"}:
-            raise ValueError("jopt must be set to either covariance or correlation.")
+            raise ValueError(
+                "jopt must be set to either covariance or correlation.")
 
-        options[b'jopt'] = np.asarray(1) if str.lower(kwargs["jopt"]) == "correlation" else np.asarray(0)
+        options[b'jopt'] = np.asarray(1) if str.lower(
+            kwargs["jopt"]) == "correlation" else np.asarray(0)
 
     if "pcrit" in kwargs:
         provided_pcrit = np.asarray(kwargs["pcrit"]).astype(np.float64)
@@ -636,8 +690,10 @@ def eofunc(data: Iterable, neval, **kwargs) -> xr.DataArray:
     time_dim = int(kwargs.get("time_dim", -1))
 
     if (time_dim >= np_data.ndim) or (time_dim < -np_data.ndim):
-        raise ValueError(f"dimension out of bound. The input data has {np_data.ndim} dimension."
-                         f" hence, time_dim must be between {-np_data.ndim} and {np_data.ndim - 1 }")
+        raise ValueError(
+            f"dimension out of bound. The input data has {np_data.ndim} dimension."
+            f" hence, time_dim must be between {-np_data.ndim} and {np_data.ndim - 1 }"
+        )
 
     if time_dim < 0:
         time_dim = np_data.ndim + time_dim
@@ -648,11 +704,19 @@ def eofunc(data: Iterable, neval, **kwargs) -> xr.DataArray:
         raise ValueError("neval must be a positive non-zero integer value.")
 
     if (time_dim == (np_data.ndim - 1)):
-        response = _ncomp._eofunc(np_data, accepted_neval, options, missing_value=missing_value)
+        response = _ncomp._eofunc(np_data,
+                                  accepted_neval,
+                                  options,
+                                  missing_value=missing_value)
     else:
-        response = _ncomp._eofunc_n(np_data, accepted_neval, time_dim, options, missing_value=missing_value)
+        response = _ncomp._eofunc_n(np_data,
+                                    accepted_neval,
+                                    time_dim,
+                                    options,
+                                    missing_value=missing_value)
 
-    attrs = data.attrs if isinstance(data, xr.DataArray) and bool(kwargs.get("meta", False)) else {}
+    attrs = data.attrs if isinstance(data, xr.DataArray) and bool(
+        kwargs.get("meta", False)) else {}
     attrs["_FillValue"] = np.nan
     attrs["missing_value"] = np.nan
 
@@ -665,18 +729,17 @@ def eofunc(data: Iterable, neval, **kwargs) -> xr.DataArray:
             attrs[k.decode('utf-8')] = v
 
     if isinstance(data, xr.DataArray) and bool(kwargs.get("meta", False)):
-        dims = ["evn"] + [data.dims[i] for i in range(data.ndim) if i != time_dim]
-        coords = {k: v for (k, v) in data.coords.items() if k != data.dims[time_dim]}
+        dims = ["evn"
+               ] + [data.dims[i] for i in range(data.ndim) if i != time_dim]
+        coords = {
+            k: v for (k, v) in data.coords.items() if k != data.dims[time_dim]
+        }
     else:
-        dims = ["evn"] + [f"dim_{i}" for i in range(np_data.ndim) if i != time_dim]
+        dims = ["evn"
+               ] + [f"dim_{i}" for i in range(np_data.ndim) if i != time_dim]
         coords = {}
 
-    return xr.DataArray(
-        response[0],
-        attrs=attrs,
-        dims=dims,
-        coords=coords
-    )
+    return xr.DataArray(response[0], attrs=attrs, dims=dims, coords=coords)
 
 
 def eofunc_ts(data: Iterable, evec, **kwargs) -> xr.DataArray:
@@ -745,11 +808,15 @@ def eofunc_ts(data: Iterable, evec, **kwargs) -> xr.DataArray:
     options = {}
     if "jopt" in kwargs:
         if not isinstance(kwargs["jopt"], str):
-            raise TypeError('jopt must be a string set to either "correlation" or "covariance".')
+            raise TypeError(
+                'jopt must be a string set to either "correlation" or "covariance".'
+            )
         if str.lower(kwargs["jopt"]) not in {"covariance", "correlation"}:
-            raise ValueError("jopt must be set to either covariance or correlation.")
+            raise ValueError(
+                "jopt must be set to either covariance or correlation.")
 
-        options[b'jopt'] = np.asarray(1) if str.lower(kwargs["jopt"]) == "correlation" else np.asarray(0)
+        options[b'jopt'] = np.asarray(1) if str.lower(
+            kwargs["jopt"]) == "correlation" else np.asarray(0)
 
     missing_value = kwargs.get("missing_value", np.nan)
 
@@ -772,17 +839,27 @@ def eofunc_ts(data: Iterable, evec, **kwargs) -> xr.DataArray:
     time_dim = int(kwargs.get("time_dim", -1))
 
     if (time_dim >= np_data.ndim) or (time_dim < -np_data.ndim):
-        raise ValueError(f"dimension out of bound. The input data has {np_data.ndim} dimension."
-                             f" hence, time_dim must be between {-np_data.ndim} and {np_data.ndim - 1 }")
+        raise ValueError(
+            f"dimension out of bound. The input data has {np_data.ndim} dimension."
+            f" hence, time_dim must be between {-np_data.ndim} and {np_data.ndim - 1 }"
+        )
     if time_dim < 0:
         time_dim = np_data.ndim + time_dim
 
     if (time_dim == (np_data.ndim - 1)):
-        response = _ncomp._eofunc_ts(np_data, np_evec, options, missing_value=missing_value)
+        response = _ncomp._eofunc_ts(np_data,
+                                     np_evec,
+                                     options,
+                                     missing_value=missing_value)
     else:
-        response = _ncomp._eofunc_ts_n(np_data, np_evec, time_dim, options, missing_value=missing_value)
+        response = _ncomp._eofunc_ts_n(np_data,
+                                       np_evec,
+                                       time_dim,
+                                       options,
+                                       missing_value=missing_value)
 
-    attrs = data.attrs if isinstance(data, xr.DataArray) and bool(kwargs.get("meta", False)) else {}
+    attrs = data.attrs if isinstance(data, xr.DataArray) and bool(
+        kwargs.get("meta", False)) else {}
     attrs["_FillValue"] = np.nan
     attrs["missing_value"] = np.nan
 
@@ -800,16 +877,17 @@ def eofunc_ts(data: Iterable, evec, **kwargs) -> xr.DataArray:
     else:
         coords = {}
 
-    return xr.DataArray(
-        response[0],
-        attrs=attrs,
-        dims=dims,
-        coords=coords
-    )
+    return xr.DataArray(response[0], attrs=attrs, dims=dims, coords=coords)
 
 
-def moc_globe_atl(lat_aux_grid, a_wvel, a_bolus, a_submeso, tlat, rmlak,
-                  msg=None, meta=False):
+def moc_globe_atl(lat_aux_grid,
+                  a_wvel,
+                  a_bolus,
+                  a_submeso,
+                  tlat,
+                  rmlak,
+                  msg=None,
+                  meta=False):
     """Facilitates calculating the meridional overturning circulation for the
     globe and Atlantic.
 
@@ -914,17 +992,18 @@ def moc_globe_atl(lat_aux_grid, a_wvel, a_bolus, a_submeso, tlat, rmlak,
     else:
         msg = np.float32(msg)
 
-
     # Call ncomp function
     out_arr = _ncomp._moc_globe_atl(lat_aux_grid, a_wvel, a_bolus, a_submeso,
                                     tlat, rmlak, msg)
 
     if meta and isinstance(input, xr.DataArray):
-        raise MetaError("ERROR moc_globe_atl: retention of metadata is not yet supported !")
+        raise MetaError(
+            "ERROR moc_globe_atl: retention of metadata is not yet supported !")
     else:
         out_arr = xr.DataArray(out_arr)
 
     return out_arr
+
 
 def dpres_plevel(plev, psfc, ptop=None, msg=None, meta=False):
     """Calculates the pressure layer thicknesses of a constant pressure level coordinate system.
@@ -1001,21 +1080,28 @@ def dpres_plevel(plev, psfc, ptop=None, msg=None, meta=False):
 
     if isinstance(psfc, np.ndarray):
         if psfc.ndim > 3:
-            raise DimensionError("ERROR dpres_plevel: The 'psfc' array must be a scalar or be a 2 or 3 dimensional array with right most dimensions lat x lon !")
+            raise DimensionError(
+                "ERROR dpres_plevel: The 'psfc' array must be a scalar or be a 2 or 3 dimensional array with right most dimensions lat x lon !"
+            )
     if plev.ndim != 1:
-        raise DimensionError("ERROR dpres_plevel: The 'plev' array must be 1 dimensional array !")
+        raise DimensionError(
+            "ERROR dpres_plevel: The 'plev' array must be 1 dimensional array !"
+        )
     if isinstance(ptop, np.ndarray):
-        raise DimensionError("ERROR dpres_plevel: The 'ptop' value must be a scalar !")
+        raise DimensionError(
+            "ERROR dpres_plevel: The 'ptop' value must be a scalar !")
     if isinstance(plev, xr.DataArray) and isinstance(psfc, xr.DataArray):
         if plev.attrs["units"] != psfc.attrs["units"]:
-            raise AttributeError("ERROR dpres_plevel: Units of 'plev' and 'psfc' needs to match !")
+            raise AttributeError(
+                "ERROR dpres_plevel: Units of 'plev' and 'psfc' needs to match !"
+            )
 
     if isinstance(plev, xr.DataArray):
         plev = plev.values
 
     if isinstance(psfc, xr.DataArray):
         psfc = psfc.values
-    elif np.size(psfc)==1: # if it is a scalar, then construct a ndarray
+    elif np.size(psfc) == 1:  # if it is a scalar, then construct a ndarray
         psfc = np.asarray(psfc)
         psfc = np.ndarray([1], buffer=psfc, dtype=psfc.dtype)
 
@@ -1023,21 +1109,31 @@ def dpres_plevel(plev, psfc, ptop=None, msg=None, meta=False):
         ptop = min(plev)
     else:
         if ptop > min(plev):
-            raise ValueError("ERROR dpres_plevel: The 'ptop' value must be <= min(plev) !")
+            raise ValueError(
+                "ERROR dpres_plevel: The 'ptop' value must be <= min(plev) !")
 
     # call the ncomp 'dpres_plevel' function
     result_dp = _ncomp._dpres_plevel(plev, psfc, ptop, msg)
 
     if meta and isinstance(input, xr.DataArray):
-        raise MetaError("ERROR dpres_plevel: retention of metadata is not yet supported !")
+        raise MetaError(
+            "ERROR dpres_plevel: retention of metadata is not yet supported !")
 
-        pass     # TODO: Retaining possible metadata might be revised in the future
+        pass  # TODO: Retaining possible metadata might be revised in the future
     else:
         result_dp = xr.DataArray(result_dp)
 
     return result_dp
 
-def rcm2points(lat2d, lon2d, fi, lat1dPoints, lon1dPoints, opt=0, msg=None, meta=False):
+
+def rcm2points(lat2d,
+               lon2d,
+               fi,
+               lat1dPoints,
+               lon1dPoints,
+               opt=0,
+               msg=None,
+               meta=False):
     """Interpolates data on a curvilinear grid (i.e. RCM, WRF, NARR) to an unstructured grid.
 
     Args:
@@ -1122,20 +1218,28 @@ def rcm2points(lat2d, lon2d, fi, lat1dPoints, lon1dPoints, opt=0, msg=None, meta
 
     # Basic sanity checks
     if lat2d.shape[0] != lon2d.shape[0] or lat2d.shape[1] != lon2d.shape[1]:
-        raise DimensionError("ERROR rcm2points: The input lat/lon grids must be the same size !")
+        raise DimensionError(
+            "ERROR rcm2points: The input lat/lon grids must be the same size !")
 
     if lat1dPoints.shape[0] != lon1dPoints.shape[0]:
-        raise DimensionError("ERROR rcm2points: The output lat/lon grids must be same size !")
+        raise DimensionError(
+            "ERROR rcm2points: The output lat/lon grids must be same size !")
 
-    if lat2d.shape[0] < 2 or lon2d.shape[0] < 2 or lat2d.shape[1] < 2 or lon2d.shape[1] < 2:
-        raise DimensionError("ERROR rcm2points: The input/output lat/lon grids must have at least 2 elements !")
+    if lat2d.shape[0] < 2 or lon2d.shape[0] < 2 or lat2d.shape[
+            1] < 2 or lon2d.shape[1] < 2:
+        raise DimensionError(
+            "ERROR rcm2points: The input/output lat/lon grids must have at least 2 elements !"
+        )
 
     if fi.ndim < 2:
-        raise DimensionError("ERROR rcm2points: fi must be at least two dimensions !\n")
+        raise DimensionError(
+            "ERROR rcm2points: fi must be at least two dimensions !\n")
 
-    if fi.shape[fi.ndim - 2] != lat2d.shape[0] or fi.shape[fi.ndim - 1] != lon2d.shape[1]:
-        raise DimensionError("ERROR rcm2points: The rightmost dimensions of fi must be (nlat2d x nlon2d),"
-			     "where nlat2d and nlon2d are the size of the lat2d/lon2d arrays !")
+    if fi.shape[fi.ndim - 2] != lat2d.shape[0] or fi.shape[fi.ndim -
+                                                           1] != lon2d.shape[1]:
+        raise DimensionError(
+            "ERROR rcm2points: The rightmost dimensions of fi must be (nlat2d x nlon2d),"
+            "where nlat2d and nlon2d are the size of the lat2d/lon2d arrays !")
 
     if isinstance(lat2d, xr.DataArray):
         lat2d = lat2d.values
@@ -1153,7 +1257,8 @@ def rcm2points(lat2d, lon2d, fi, lat1dPoints, lon1dPoints, opt=0, msg=None, meta
     fi_data = fi.values
 
     if isinstance(fi_data, np.ndarray):
-        fo = _ncomp._rcm2points(lat2d, lon2d, fi_data, lat1dPoints, lon1dPoints, opt, msg)
+        fo = _ncomp._rcm2points(lat2d, lon2d, fi_data, lat1dPoints, lon1dPoints,
+                                opt, msg)
     else:
         raise TypeError("rcm2points: the fi input argument must be a "
                         "numpy.ndarray, a dask.array.Array, or an "
@@ -1161,7 +1266,8 @@ def rcm2points(lat2d, lon2d, fi, lat1dPoints, lon1dPoints, opt=0, msg=None, meta
                         " a dask.array.Array.")
 
     if meta and isinstance(input, xr.DataArray):
-        raise MetaError("ERROR rcm2points: retention of metadata is not yet supported !")
+        raise MetaError(
+            "ERROR rcm2points: retention of metadata is not yet supported !")
     else:
         fo = xr.DataArray(fo)
 
@@ -1289,13 +1395,16 @@ def linint2_points(fi, xo, yo, icycx, msg=None, meta=False, xi=None, yi=None):
     if not isinstance(fi, xr.DataArray):
         fi = xr.DataArray(fi)
         if xi is None or yi is None:
-            raise CoordinateError("linint2_points: arguments xi and yi must be passed"
-                                  " explicitly if fi is not an xarray.DataArray !")
+            raise CoordinateError(
+                "linint2_points: arguments xi and yi must be passed"
+                " explicitly if fi is not an xarray.DataArray !")
     if xo.shape[0] != yo.shape[0]:
-        raise DimensionError("ERROR linint2_points: The xo and yo must be the same size !")
+        raise DimensionError(
+            "ERROR linint2_points: The xo and yo must be the same size !")
 
     if fi.ndim < 2:
-        raise DimensionError("ERROR linint2_points: fi must be at least two dimensions !\n")
+        raise DimensionError(
+            "ERROR linint2_points: fi must be at least two dimensions !\n")
 
     if xi is None:
         xi = fi.coords[fi.dims[-1]].values
@@ -1320,7 +1429,9 @@ def linint2_points(fi, xo, yo, icycx, msg=None, meta=False, xi=None, yi=None):
         raise TypeError
 
     if meta and isinstance(input, xr.DataArray):
-        raise MetaError("ERROR linint2_points: retention of metadata is not yet supported !")
+        raise MetaError(
+            "ERROR linint2_points: retention of metadata is not yet supported !"
+        )
     else:
         fo = xr.DataArray(fo)
 
@@ -1471,21 +1582,30 @@ def triple2grid(x, y, data, xgrid, ygrid, **kwargs):
     # todo: Revisit for handling of "meta" argument
 
     # Basic sanity checks
-    if x.shape[0] != y.shape[0] or x.shape[0] != data.shape[data.ndim-1]:
-        raise DimensionError("ERROR triple2grid: The The length of `x` and `y` must be the same as the rightmost dimension of `data` !")
+    if x.shape[0] != y.shape[0] or x.shape[0] != data.shape[data.ndim - 1]:
+        raise DimensionError(
+            "ERROR triple2grid: The The length of `x` and `y` must be the same as the rightmost dimension of `data` !"
+        )
     if x.ndim > 1 or y.ndim > 1:
-        raise DimensionError("ERROR triple2grid: `x` and `y` arguments must be one-dimensional array !\n")
+        raise DimensionError(
+            "ERROR triple2grid: `x` and `y` arguments must be one-dimensional array !\n"
+        )
     if xgrid.ndim > 1 or ygrid.ndim > 1:
-        raise DimensionError("ERROR triple2grid: `xgrid` and `ygrid` arguments must be one-dimensional array !\n")
+        raise DimensionError(
+            "ERROR triple2grid: `xgrid` and `ygrid` arguments must be one-dimensional array !\n"
+        )
 
     # Parsing Options
     options = {}
     if "method" in kwargs:
         if not isinstance(kwargs["method"], int):
-            raise TypeError('ERROR triple2grid: `method` arg must be an integer. Set it to either 1 or 0.')
+            raise TypeError(
+                'ERROR triple2grid: `method` arg must be an integer. Set it to either 1 or 0.'
+            )
         input_method = np.asarray(kwargs["method"]).astype(np.int_)
         if (input_method != 0) and (input_method != 1):
-            raise TypeError('ERROR triple2grid: `method` arg accepts either 0 or 1.')
+            raise TypeError(
+                'ERROR triple2grid: `method` arg accepts either 0 or 1.')
         options[b'method'] = input_method
 
         # `distmx` is only applicable when `method`==1
@@ -1493,13 +1613,16 @@ def triple2grid(x, y, data, xgrid, ygrid, **kwargs):
             if "distmx" in kwargs:
                 input_distmx = np.asarray(kwargs["distmx"]).astype(np.float_)
                 if input_distmx.size != 1:
-                    raise ValueError("ERROR triple2grid: Provide a scalar value for `distmx` !")
+                    raise ValueError(
+                        "ERROR triple2grid: Provide a scalar value for `distmx` !"
+                    )
                 options[b'distmx'] = input_distmx
 
     if "domain" in kwargs:
         input_domain = np.asarray(kwargs["domain"]).astype(np.float_)
         if input_domain.size != 1:
-            raise ValueError("ERROR triple2grid: Provide a scalar value for `domain` !")
+            raise ValueError(
+                "ERROR triple2grid: Provide a scalar value for `domain` !")
         options[b'domain'] = input_domain
 
     msg = kwargs.get("msg", np.nan)
@@ -1525,7 +1648,8 @@ def triple2grid(x, y, data, xgrid, ygrid, **kwargs):
                         "numpy.ndarray.")
 
     if meta and isinstance(input, xr.DataArray):
-        raise MetaError("ERROR triple2grid: retention of metadata is not yet supported !")
+        raise MetaError(
+            "ERROR triple2grid: retention of metadata is not yet supported !")
     else:
         fo = xr.DataArray(fo)
 
@@ -1599,8 +1723,9 @@ def grid2triple(x, y, z, msg=None, meta=False):
     # todo: Revisit for handling of "meta" argument
 
     # Basic sanity checks
-    if z.ndim != 2 :
-        raise DimensionError("ERROR grid2triple: `z` must be two dimensions !\n")
+    if z.ndim != 2:
+        raise DimensionError(
+            "ERROR grid2triple: `z` must be two dimensions !\n")
 
     if isinstance(x, xr.DataArray):
         x = x.values
@@ -1617,7 +1742,8 @@ def grid2triple(x, y, z, msg=None, meta=False):
                         "numpy.ndarray.")
 
     if meta and isinstance(input, xr.DataArray):
-        raise MetaError("ERROR grid2triple: retention of metadata is not yet supported !")
+        raise MetaError(
+            "ERROR grid2triple: retention of metadata is not yet supported !")
     else:
         fo = xr.DataArray(fo)
 
