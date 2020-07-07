@@ -6,11 +6,15 @@ import sys
 import time
 import unittest as ut
 
+
 class Test_carrayify(ut.TestCase):
+
     def test_carrayify_one_arg(self):
+
         @carrayify
         def new_func(a):
             return a
+
         a = np.array([1, 2, 3])
         b = a[::-1]
         c = new_func(a)
