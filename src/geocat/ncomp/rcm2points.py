@@ -103,10 +103,10 @@ def rcm2points(lat2d,
             "ERROR rcm2points: The output lat/lon grids must be same size !")
 
     if lat2d.shape[0] < 2 or lon2d.shape[0] < 2 or lat2d.shape[
-        1] < 2 or lon2d.shape[1] < 2:
+            1] < 2 or lon2d.shape[1] < 2:
         raise DimensionError(
             "ERROR rcm2points: The input/output lat/lon grids must have at least 2 elements !"
-            )
+        )
 
     if fi.ndim < 2:
         raise DimensionError(

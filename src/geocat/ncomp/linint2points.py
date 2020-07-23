@@ -160,7 +160,7 @@ def linint2_points(fi, xo, yo, icycx, msg=None, meta=False, xi=None, yi=None):
     if meta and isinstance(input, xr.DataArray):
         raise MetaError(
             "ERROR linint2_points: retention of metadata is not yet supported !"
-            )
+        )
     else:
         fo = xr.DataArray(fo)
 

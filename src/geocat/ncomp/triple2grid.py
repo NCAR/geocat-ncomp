@@ -111,15 +111,15 @@ def triple2grid(x, y, data, xgrid, ygrid, **kwargs):
     if x.shape[0] != y.shape[0] or x.shape[0] != data.shape[data.ndim - 1]:
         raise DimensionError(
             "ERROR triple2grid: The The length of `x` and `y` must be the same as the rightmost dimension of `data` !"
-            )
+        )
     if x.ndim > 1 or y.ndim > 1:
         raise DimensionError(
             "ERROR triple2grid: `x` and `y` arguments must be one-dimensional array !\n"
-            )
+        )
     if xgrid.ndim > 1 or ygrid.ndim > 1:
         raise DimensionError(
             "ERROR triple2grid: `xgrid` and `ygrid` arguments must be one-dimensional array !\n"
-            )
+        )
 
     # Parsing Options
     options = {}
@@ -127,7 +127,7 @@ def triple2grid(x, y, data, xgrid, ygrid, **kwargs):
         if not isinstance(kwargs["method"], int):
             raise TypeError(
                 'ERROR triple2grid: `method` arg must be an integer. Set it to either 1 or 0.'
-                )
+            )
         input_method = np.asarray(kwargs["method"]).astype(np.int_)
         if (input_method != 0) and (input_method != 1):
             raise TypeError(
@@ -141,7 +141,7 @@ def triple2grid(x, y, data, xgrid, ygrid, **kwargs):
                 if input_distmx.size != 1:
                     raise ValueError(
                         "ERROR triple2grid: Provide a scalar value for `distmx` !"
-                        )
+                    )
                 options[b'distmx'] = input_distmx
 
     if "domain" in kwargs:

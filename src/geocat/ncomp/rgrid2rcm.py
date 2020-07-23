@@ -97,13 +97,13 @@ def rgrid2rcm(lat1d, lon1d, fi, lat2d, lon2d, msg=None, meta=False):
     if lat2d.shape[0] != lon2d.shape[0] or lat2d.shape[1] != lon2d.shape[1]:
         raise DimensionError(
             "ERROR rgrid2rcm: The output lat2D/lon2D grids must be the same size !"
-            )
+        )
 
     if lat2d.shape[0] < 2 or lon2d.shape[0] < 2 or lat2d.shape[
-        1] < 2 or lon2d.shape[1] < 2:
+            1] < 2 or lon2d.shape[1] < 2:
         raise DimensionError(
             "ERROR rgrid2rcm: The input/output lat/lon grids must have at least 2 elements !"
-            )
+        )
 
     if fi.ndim < 2:
         raise DimensionError(
