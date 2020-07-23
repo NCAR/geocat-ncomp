@@ -3,7 +3,8 @@ from . import _ncomp
 # This is done to maintain backwards compatibily from when the functions were defined in geocat/ncomp/__init__.py
 from .dpres_plevel import dpres_plevel
 from .eofunc import (eofunc, eofunc_ts)
-from .errors import (Error, AttributeError, ChunkError, CoordinateError, DimensionError, MetaError)
+from .errors import (Error, AttributeError, ChunkError, CoordinateError,
+                     DimensionError, MetaError)
 from .grid2triple import grid2triple
 from .linint2 import linint2
 from .linint2points import linint2_points
