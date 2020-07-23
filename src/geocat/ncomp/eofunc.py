@@ -39,7 +39,7 @@ def eofunc(data: Iterable, neval, **kwargs) -> xr.DataArray:
         if not isinstance(kwargs["jopt"], str):
             raise TypeError(
                 'jopt must be a string set to either "correlation" or "covariance".'
-            )
+                )
         if str.lower(kwargs["jopt"]) not in {"covariance", "correlation"}:
             raise ValueError(
                 "jopt must be set to either covariance or correlation.")
@@ -74,7 +74,7 @@ def eofunc(data: Iterable, neval, **kwargs) -> xr.DataArray:
         raise ValueError(
             f"dimension out of bound. The input data has {np_data.ndim} dimension."
             f" hence, time_dim must be between {-np_data.ndim} and {np_data.ndim - 1}"
-        )
+            )
 
     if time_dim < 0:
         time_dim = np_data.ndim + time_dim
@@ -111,13 +111,13 @@ def eofunc(data: Iterable, neval, **kwargs) -> xr.DataArray:
 
     if isinstance(data, xr.DataArray) and bool(kwargs.get("meta", False)):
         dims = ["evn"
-               ] + [data.dims[i] for i in range(data.ndim) if i != time_dim]
+                ] + [data.dims[i] for i in range(data.ndim) if i != time_dim]
         coords = {
             k: v for (k, v) in data.coords.items() if k != data.dims[time_dim]
-        }
+            }
     else:
         dims = ["evn"
-               ] + [f"dim_{i}" for i in range(np_data.ndim) if i != time_dim]
+                ] + [f"dim_{i}" for i in range(np_data.ndim) if i != time_dim]
         coords = {}
 
     return xr.DataArray(response[0], attrs=attrs, dims=dims, coords=coords)
@@ -191,7 +191,7 @@ def eofunc_ts(data: Iterable, evec, **kwargs) -> xr.DataArray:
         if not isinstance(kwargs["jopt"], str):
             raise TypeError(
                 'jopt must be a string set to either "correlation" or "covariance".'
-            )
+                )
         if str.lower(kwargs["jopt"]) not in {"covariance", "correlation"}:
             raise ValueError(
                 "jopt must be set to either covariance or correlation.")
@@ -223,7 +223,7 @@ def eofunc_ts(data: Iterable, evec, **kwargs) -> xr.DataArray:
         raise ValueError(
             f"dimension out of bound. The input data has {np_data.ndim} dimension."
             f" hence, time_dim must be between {-np_data.ndim} and {np_data.ndim - 1}"
-        )
+            )
     if time_dim < 0:
         time_dim = np_data.ndim + time_dim
 

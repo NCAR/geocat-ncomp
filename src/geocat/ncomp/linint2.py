@@ -4,6 +4,10 @@ import xarray as xr
 from dask.array.core import map_blocks
 
 from . import _ncomp
+# The following imports allow for the function name to be used directly under the package namespace, skipping the module name.
+# This is done to maintain backwards compatibily from when the functions were defined in geocat/ncomp/__init__.py
+from .errors import (
+    ChunkError, CoordinateError)
 
 
 def linint2(fi, xo, yo, icycx, msg=None, meta=True, xi=None, yi=None):
@@ -239,7 +243,7 @@ def linint2(fi, xo, yo, icycx, msg=None, meta=True, xi=None, yi=None):
         coords = {
             k: v if k not in fi.dims[-2:] else (xo if k == fi.dims[-1] else yo)
             for (k, v) in fi.coords.items()
-        }
+            }
 
         fo = xr.DataArray(fo, attrs=fi.attrs, dims=fi.dims, coords=coords)
     else:

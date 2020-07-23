@@ -4,7 +4,10 @@ import xarray as xr
 from dask.array.core import map_blocks
 
 from . import _ncomp
-from .errors import (ChunkError, DimensionError, MetaError)
+# The following imports allow for the function name to be used directly under the package namespace, skipping the module name.
+# This is done to maintain backwards compatibily from when the functions were defined in geocat/ncomp/__init__.py
+from .errors import (
+    ChunkError, DimensionError, MetaError)
 
 
 def rgrid2rcm(lat1d, lon1d, fi, lat2d, lon2d, msg=None, meta=False):
@@ -97,13 +100,13 @@ def rgrid2rcm(lat1d, lon1d, fi, lat2d, lon2d, msg=None, meta=False):
     if lat2d.shape[0] != lon2d.shape[0] or lat2d.shape[1] != lon2d.shape[1]:
         raise DimensionError(
             "ERROR rgrid2rcm: The output lat2D/lon2D grids must be the same size !"
-        )
+            )
 
     if lat2d.shape[0] < 2 or lon2d.shape[0] < 2 or lat2d.shape[
-            1] < 2 or lon2d.shape[1] < 2:
+        1] < 2 or lon2d.shape[1] < 2:
         raise DimensionError(
             "ERROR rgrid2rcm: The input/output lat/lon grids must have at least 2 elements !"
-        )
+            )
 
     if fi.ndim < 2:
         raise DimensionError(

@@ -2,6 +2,10 @@ import numpy as np
 import xarray as xr
 
 from . import _ncomp
+# The following imports allow for the function name to be used directly under the package namespace, skipping the module name.
+# This is done to maintain backwards compatibily from when the functions were defined in geocat/ncomp/__init__.py
+from .errors import (
+    DimensionError, MetaError)
 
 
 def grid2triple(x, y, z, msg=None, meta=False):

@@ -3,6 +3,12 @@ import numpy as np
 import xarray as xr
 from dask.array.core import map_blocks
 
+from . import _ncomp
+# The following imports allow for the function name to be used directly under the package namespace, skipping the module name.
+# This is done to maintain backwards compatibily from when the functions were defined in geocat/ncomp/__init__.py
+from .errors import (
+    ChunkError, DimensionError, MetaError)
+
 
 def rcm2rgrid(lat2d, lon2d, fi, lat1d, lon1d, msg=None, meta=False):
     """Interpolates data on a curvilinear grid (i.e. RCM, WRF, NARR) to a rectilinear grid.
@@ -105,10 +111,10 @@ def rcm2rgrid(lat2d, lon2d, fi, lat1d, lon1d, msg=None, meta=False):
             "ERROR rcm2rgrid: The input lat/lon grids must be the same size !")
 
     if lat2d.shape[0] < 2 or lon2d.shape[0] < 2 or lat2d.shape[
-            1] < 2 or lon2d.shape[1] < 2:
+        1] < 2 or lon2d.shape[1] < 2:
         raise DimensionError(
             "ERROR rcm2rgrid: The input/output lat/lon grids must have at least 2 elements !"
-        )
+            )
 
     if fi.ndim < 2:
         raise DimensionError(

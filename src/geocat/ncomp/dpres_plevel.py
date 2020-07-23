@@ -2,6 +2,10 @@ import numpy as np
 import xarray as xr
 
 from . import _ncomp
+# The following imports allow for the function name to be used directly under the package namespace, skipping the module name.
+# This is done to maintain backwards compatibily from when the functions were defined in geocat/ncomp/__init__.py
+from .errors import (
+    AttributeError, DimensionError, MetaError)
 
 
 def dpres_plevel(plev, psfc, ptop=None, msg=None, meta=False):
@@ -80,11 +84,11 @@ def dpres_plevel(plev, psfc, ptop=None, msg=None, meta=False):
         if psfc.ndim > 3:
             raise DimensionError(
                 "ERROR dpres_plevel: The 'psfc' array must be a scalar or be a 2 or 3 dimensional array with right most dimensions lat x lon !"
-            )
+                )
     if plev.ndim != 1:
         raise DimensionError(
             "ERROR dpres_plevel: The 'plev' array must be 1 dimensional array !"
-        )
+            )
     if isinstance(ptop, np.ndarray):
         raise DimensionError(
             "ERROR dpres_plevel: The 'ptop' value must be a scalar !")
@@ -92,7 +96,7 @@ def dpres_plevel(plev, psfc, ptop=None, msg=None, meta=False):
         if plev.attrs["units"] != psfc.attrs["units"]:
             raise AttributeError(
                 "ERROR dpres_plevel: Units of 'plev' and 'psfc' needs to match !"
-            )
+                )
 
     if isinstance(plev, xr.DataArray):
         plev = plev.values
