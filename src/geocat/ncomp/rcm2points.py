@@ -4,8 +4,7 @@ import xarray as xr
 from . import _ncomp
 # The following imports allow for the function name to be used directly under the package namespace, skipping the module name.
 # This is done to maintain backwards compatibily from when the functions were defined in geocat/ncomp/__init__.py
-from .errors import (
-    DimensionError, MetaError)
+from .errors import (DimensionError, MetaError)
 
 
 def rcm2points(lat2d,
@@ -107,10 +106,10 @@ def rcm2points(lat2d,
             "ERROR rcm2points: The output lat/lon grids must be same size !")
 
     if lat2d.shape[0] < 2 or lon2d.shape[0] < 2 or lat2d.shape[
-        1] < 2 or lon2d.shape[1] < 2:
+            1] < 2 or lon2d.shape[1] < 2:
         raise DimensionError(
             "ERROR rcm2points: The input/output lat/lon grids must have at least 2 elements !"
-            )
+        )
 
     if fi.ndim < 2:
         raise DimensionError(

@@ -4,8 +4,7 @@ import xarray as xr
 from . import _ncomp
 # The following imports allow for the function name to be used directly under the package namespace, skipping the module name.
 # This is done to maintain backwards compatibily from when the functions were defined in geocat/ncomp/__init__.py
-from .errors import (
-    MetaError)
+from .errors import (MetaError)
 
 
 def moc_globe_atl(lat_aux_grid,
