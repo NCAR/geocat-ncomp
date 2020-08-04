@@ -54,7 +54,7 @@ installed.
 Required dependencies for building GeoCAT-ncomp
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-    - Python 3.5+
+    - Python 3.6+
     - numpy
     - xarray
     - cython
