@@ -59,6 +59,7 @@ All new computational functionality needs to include unit testing. For that purp
 guideline:
 
 1. Unit tests of the function should be implemented as a separate test file under the `$GEOCATNCOMP/test` folder.
+
 2. The [pytest](https://docs.pytest.org/en/stable/contents.html) testing framework is used as a “runner” for the tests. 
 For further information about `pytest`, see: [pytest documentation](https://docs.pytest.org/en/stable/contents.html).
     - Test scripts themselves are not intended to use `pytest` through implementation. Instead, `pytest` should be used 
@@ -73,6 +74,7 @@ For further information about `pytest`, see: [pytest documentation](https://docs
 3. Python’s unit testing framework [unittest](https://docs.python.org/3/library/unittest.html) is used for 
 implementation of the test scripts. For further information about `unittest`, 
 see: [unittest documentation](https://docs.python.org/3/library/unittest.html).
+
 4. Recommended but not mandatory implementation approach is as follows:
     - Common data structures as well as variables and functions, which could be used by multiple test methods throughout 
     the test script, are defined under a base test class.

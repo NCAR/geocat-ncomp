@@ -38,7 +38,7 @@ compatibility between dependency packages.
 
 Also, note that the Conda package manager automatically installs all `required`
 dependencies, meaning it is not necessary to explicitly install Python, NumPy,
-Xarray, or Dask when creating an envionment.  Although packages like Matplotlib
+Xarray, or Dask when creating an environment.  Although packages like Matplotlib
 are often used with GeoCAT-ncomp, they are considered `optional` dependencies and
 must be explicitly installed.
 
@@ -70,9 +70,9 @@ further dependencies for compiled language implementation.
 ### How to create a Conda environment for building GeoCAT-ncomp
 
 The GeoCAT-ncomp source code includes two Conda environment definition files in
-the `/build_envs` directory that can be used to create a development environment
-containing all of the packages required to build GeoCAT-comp.  The file
-`environment_Linux.yml` is intended to be used on Linux systems, while
+the `/build_envs` folder under the root directory that can be used to create a 
+development environment containing all of the packages required to build GeoCAT-comp.  
+The file `environment_Linux.yml` is intended to be used on Linux systems, while
 `environment_Darwin.yml` should be used on macOS.  It is necessary to have
 separate `environment_*.yml` files because Linux and macOS use different C
 compilers, although the following commands should work on both Linux and macOS:
