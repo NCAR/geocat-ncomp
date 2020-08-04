@@ -60,7 +60,7 @@ Required dependencies for building GeoCAT-ncomp
     - cython
     - dask
     - pytest
-    - `ncomp <http://github.com/NCAR/ncomp/>`_
+    - `libncomp <https://github.com/NCAR/libncomp/>`_
     - Any C compiler (GCC, Clang, etc)
 
 
@@ -76,7 +76,7 @@ separate `environment_*.yml` files because Linux and macOS use different C
 compilers, although the following commands should work on both Linux and macOS::
 
     conda env create -f build_envs/environment_$(uname).yml
-    conda activate geocat_build
+    conda activate geocat_ncomp_build
 
 
 Installing GeoCAT-ncomp
