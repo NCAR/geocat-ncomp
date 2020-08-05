@@ -71,7 +71,7 @@ further dependencies for compiled language implementation.
 
 The GeoCAT-ncomp source code includes two Conda environment definition files in
 the `/build_envs` folder under the root directory that can be used to create a 
-development environment containing all of the packages required to build GeoCAT-comp.  
+development environment containing all of the packages required to build GeoCAT-ncomp.  
 The file `environment_Linux.yml` is intended to be used on Linux systems, while
 `environment_Darwin.yml` should be used on macOS.  It is necessary to have
 separate `environment_*.yml` files because Linux and macOS use different C
