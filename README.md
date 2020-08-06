@@ -1,3 +1,7 @@
+![actions](https://github.com/NCAR/geocat-ncomp/workflows/actions/badge.svg)
+[![Documentation Status](https://readthedocs.org/projects/geocat-ncomp/badge/?version=latest)](https://geocat-ncomp.readthedocs.io/en/latest/?badge=latest)
+
+
 GeoCAT-comp is both the whole computational component of the [GeoCAT](https://ncar.github.io/GeoCAT) 
 project and a single Github repository as described in [GeoCAT-comp](https://github.com/NCAR/geocat-comp). 
 As the computational component of [GeoCAT](https://ncar.github.io/GeoCAT), GeoCAT-comp provides implementations of 
