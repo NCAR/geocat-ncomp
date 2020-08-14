@@ -11,25 +11,13 @@ cimport numpy as np
 import functools
 import warnings
 
+from .carrayify import carrayify
+
 class NcompWarning(Warning):
     pass
 
 class NcompError(Exception):
     pass
-
-def carrayify(f):
-    """
-    A decorator that ensures that :class:`numpy.ndarray` arguments are
-    C-contiguous in memory. The decorator function takes no arguments.
-    """
-    @functools.wraps(f)
-    def wrapper(*args, **kwargs):
-        new_args = list(args)
-        for i, arg in enumerate(new_args):
-            if isinstance(arg, np.ndarray) and not arg.flags.carray:
-                new_args[i] = np.ascontiguousarray(arg)
-        return f(*new_args, **kwargs)
-    return wrapper
 
 
 cdef class Array:
