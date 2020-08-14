@@ -1,7 +1,5 @@
 # cython: language_level=3, boundscheck=False, embedsignature=True
 import functools
-
-cimport numpy as np
 import numpy as np
 
 
