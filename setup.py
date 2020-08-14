@@ -17,7 +17,7 @@ with open("src/geocat/ncomp/version.py") as f:
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 PREFIX = os.path.normpath(sys.prefix)
 
-include_dirs = [os.path.join(PREFIX, 'include'), numpy.get_include(),"."]
+include_dirs = [os.path.join(PREFIX, 'include'), numpy.get_include(), "."]
 
 extensions = [
     Extension(
