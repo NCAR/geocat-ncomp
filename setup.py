@@ -26,6 +26,7 @@ extensions = [
         include_dirs=include_dirs,
         libraries=["ncomp"],
     ),
+    Extension("geocat.ncomp.carrayify",["src/geocat/ncomp/carrayify.pyx"])
 ]
 setup(
     name="geocat.ncomp",
