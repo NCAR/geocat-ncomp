@@ -1,4 +1,5 @@
 import numpy as np
+cimport numpy as np
 from . cimport libncomp
 from . cimport _ncomp
 from ._carrayify import carrayify
