@@ -11,9 +11,9 @@ cimport numpy as np
 import functools
 import warnings
 
-from .carrayify import carrayify
-from .linint2 import _linint2
-from .linint2points import _linint2_points
+from ._carrayify import carrayify
+from ._linint2 import _linint2
+from ._linint2points import _linint2_points
 
 class NcompWarning(Warning):
     pass

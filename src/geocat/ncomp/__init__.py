@@ -7,7 +7,7 @@ from .errors import (Error, AttributeError, ChunkError, CoordinateError,
                      DimensionError, MetaError)
 from .grid2triple import grid2triple
 from .linint2 import linint2
-from .linint2points import linint2_points
+from .linint2_points import linint2_points
 from .moc_globe_alt import moc_globe_atl
 from .rcm2points import rcm2points
 from .rcm2rgrid import rcm2rgrid

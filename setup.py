@@ -27,8 +27,18 @@ extensions = [
         libraries=["ncomp"],
     ),
     Extension(
-        "geocat.ncomp.carrayify",
-        ["src/geocat/ncomp/carrayify.pyx"],
+        "geocat.ncomp._carrayify",
+        ["src/geocat/ncomp/_carrayify.pyx"],
+        include_dirs=include_dirs,
+    ),
+    Extension(
+        "geocat.ncomp._linint2",
+        ["src/geocat/ncomp/_linint2.pyx"],
+        include_dirs=include_dirs,
+    ),
+    Extension(
+        "geocat.ncomp._linint2points",
+        ["src/geocat/ncomp/_linint2_points.pyx"],
         include_dirs=include_dirs,
     )
 ]
