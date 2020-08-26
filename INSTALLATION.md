@@ -58,13 +58,13 @@ installed.
 
 - Python 3.6+
 - numpy
-- xarray
-- cython
-- dask
-- pytest
+- [xarray](http://xarray.pydata.org/en/stable/)
+- [cython](https://cython.org/)
+- [dask](https://dask.org/)
+- [pytest](https://docs.pytest.org/en/stable/)
 - [libncomp](http://github.com/NCAR/libncomp/)
     
-Note: [libncomp](http://github.com/NCAR/libncomp/ dependency will install 
+Note: [libncomp](http://github.com/NCAR/libncomp/) dependency will install 
 further dependencies for compiled language implementation.
 
 ### How to create a Conda environment for building GeoCAT-ncomp
@@ -95,7 +95,7 @@ configure your build environment as described above.
 ### Testing a GeoCAT-ncomp build
 
 A GeoCAT-ncomp build can be tested from the root directory of the source code
-repository using the following command (Explicit installation of the  
+repository using the following command (Explicit installation of the 
 [pytest](https://docs.pytest.org/en/stable/) package may be required):
 
     pytest test
