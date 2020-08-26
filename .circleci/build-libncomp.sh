@@ -3,6 +3,7 @@
 set -e
 set -eo pipefail
 
+# Install conda environment
 conda config --set always_yes true --set changeps1 false --set quiet true
 conda config --add channels conda-forge
 conda list -f python -e >> /usr/local/conda-meta/pinned
@@ -13,6 +14,17 @@ git checkout ${CIRCLE_BRANCH} || echo "No ${CIRCLE_BRANCH} on libncomp"
 conda env create -f .circleci/environment-dev-$(uname).yml --name ${LIBNCOMP_ENV_NAME} --quiet
 conda env list
 source activate ${LIBNCOMP_ENV_NAME}
+
+# Build libNComp
 autoreconf --install
 ./configure --prefix=${CONDA_PREFIX}
 make install
+
+# Test the build
+${NM:-nm} ${CONDA_PREFIX}/lib/libncomp.a
+if [ $(uname) = Darwin ]; then
+    ${OTOOL:-otool} -L ${CONDA_PREFIX}/lib/libncomp.dylib
+else
+    ${LDD:-ldd} ${CONDA_PREFIX}/lib/libncomp.so
+fi
+make check

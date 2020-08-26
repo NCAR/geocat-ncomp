@@ -1,4 +1,4 @@
-name: geocat_build
+name: geocat_ncomp_build
 channels:
   - conda-forge
   - ncar

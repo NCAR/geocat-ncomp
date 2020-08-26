@@ -1,16 +1,20 @@
-Installation
-============
+# Installation
 
-Installing GeoCAT-ncomp via Conda
----------------------------------
+This installation guide includes only the GeoCAT-ncomp installation and build instructions. 
+Please refer to [GeoCAT Contributor's Guide](https://geocat.ucar.edu/pages/contributing.html) for 
+installation of the whole GeoCAT project or [GeoCAT-comp](https://github.com/NCAR/geocat-comp) for 
+that of the overall computational component of the GeoCAT project.
+  
+
+## Installing GeoCAT-ncomp via Conda
 
 The easiest way to install GeoCAT-ncomp is using
-`Conda <http://conda.pydata.org/docs/>`_::
+[Conda](http://conda.pydata.org/docs/):
 
     conda create -n geocat -c conda-forge -c ncar geocat-ncomp
 
 where "geocat" is the name of a new conda environment, which can then be
-activated using::
+activated using:
 
     conda activate geocat
 
@@ -29,77 +33,69 @@ in an existing environment with the following commands::
     conda activate geocat # or whatever your environment is called
     conda install -c conda-forge pyngl matplotlib cartopy jupyter
 
-Please note that the use of the conda-forge channel is essential to guarantee
+Please note that the use of the **conda-forge** channel is essential to guarantee
 compatibility between dependency packages.
 
 Also, note that the Conda package manager automatically installs all `required`
 dependencies, meaning it is not necessary to explicitly install Python, NumPy,
-Xarray, or Dask when creating an envionment.  Although packages like Matplotlib
+Xarray, or Dask when creating an environment.  Although packages like Matplotlib
 are often used with GeoCAT-ncomp, they are considered `optional` dependencies and
 must be explicitly installed.
 
-If you are interested in learning more about how Conda environments work, please
-visit the `managing environments <https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html>`_
+If you are interested in learning more about how Conda environments work, please visit the 
+[managing environments](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html) 
 page of the Conda documentation.
 
 
-Building GeoCAT-ncomp from source
----------------------------------
+## Building GeoCAT-ncomp from source
 
 Building GeoCAT-ncomp from source code is a fairly straightforward task, but
-doing so should not be necessary for most users. If you `are` interested in
+doing so should not be necessary for most users. If you are interested in
 building GeoCAT-ncomp from source, you will need the following packages to be
 installed.
 
-Required dependencies for building GeoCAT-ncomp
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+### Required dependencies for building GeoCAT-comp
 
-    - Python 3.6+
-    - numpy
-    - xarray
-    - cython
-    - dask
-    - pytest
-    - `libncomp <https://github.com/NCAR/libncomp/>`_
-    - Any C compiler (GCC, Clang, etc)
+- Python 3.6+
+- numpy
+- xarray
+- cython
+- dask
+- pytest
+- [libncomp](http://github.com/NCAR/libncomp/)
+    
+Note: [libncomp](http://github.com/NCAR/libncomp/ dependency will install 
+further dependencies for compiled language implementation.
 
-
-How to create a Conda environment for building GeoCAT-ncomp
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+### How to create a Conda environment for building GeoCAT-ncomp
 
 The GeoCAT-ncomp source code includes two Conda environment definition files in
-the `build_envs` directory that can be used to create a development environment
-containing all of the packages required to build GeoCAT-ncomp.  The file
-`environment_Linux.yml` is intended to be used on Linux systems, while
+the `/build_envs` folder under the root directory that can be used to create a 
+development environment containing all of the packages required to build GeoCAT-ncomp.  
+The file `environment_Linux.yml` is intended to be used on Linux systems, while
 `environment_Darwin.yml` should be used on macOS.  It is necessary to have
 separate `environment_*.yml` files because Linux and macOS use different C
-compilers, although the following commands should work on both Linux and macOS::
+compilers, although the following commands should work on both Linux and macOS:
 
     conda env create -f build_envs/environment_$(uname).yml
     conda activate geocat_ncomp_build
 
 
-Installing GeoCAT-ncomp
-^^^^^^^^^^^^^^^^^^^^^^^
+### Installing GeoCAT-ncomp
  
 Once the dependencies listed above are installed, you can install GeoCAT-ncomp
-with the command::
+with running the following command from the root-directory:
 
     pip install .
 
-If you are using a conda environment as described above, this command should
-work as-is.  However, if you have chosen to use a different Python binary and
-have installed dependencies elsewhere, you may need to set certain environment
-variables (CFLAGS, CPPFLAGS, or LDFLAGS) in order for the setup.py script to
-find all of the necessary dependency packages.  Due to the potentially
-complicated nature of the build process, we strongly recommend using Conda to
-configure your build environment.
+For compatibility purposes, we strongly recommend using Conda to
+configure your build environment as described above.
 
 
-Testing a GeoCAT-ncomp build
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+### Testing a GeoCAT-ncomp build
 
 A GeoCAT-ncomp build can be tested from the root directory of the source code
-repository using the following command::
+repository using the following command (Explicit installation of the  
+[pytest](https://docs.pytest.org/en/stable/) package may be required):
 
     pytest test
