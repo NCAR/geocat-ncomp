@@ -83,4 +83,4 @@ see: [unittest documentation](https://docs.python.org/3/library/unittest.html).
     test class implemented for the purpose mentioned above.
     - Assertions are used for testing various cases such as array comparison.
     - Please see previously implemented test cases for reference of the recommended testing approach, 
-    e.g. [test_moc_globe_atl.py](https://github.com/NCAR/geocat-ncomp/blob/develop/test/test_moc_globe_atl.py)
+    e.g. [test_moc_globe_atl.py](https://github.com/NCAR/geocat-ncomp/blob/master/test/test_moc_globe_atl.py)
