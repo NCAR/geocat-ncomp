@@ -39,7 +39,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Build libNComp
+          name: Build libNComp and test
           command: ./.circleci/build-libncomp.sh
       - save_cache:
           key: deps-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ .Environment.CIRCLE_WORKFLOW_JOB_ID }}
